@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(
       DevicePreview(
-        // enabled: !kReleaseMode,
-        builder: (context) => MyApp(), // Wrap your app
+        builder: (context) => const MyApp(), // Wrap your app
       ),
     );
 
@@ -17,26 +18,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      useInheritedMediaQuery: true,
-      home: const MyHomePage(title: 'Notify'),
+          useMaterial3: true,
+          primaryColor: const Color(0xFF14181b),
+          focusColor: const Color(0xFF0A0C0E),
+          primaryTextTheme: const TextTheme(
+              displayLarge: TextStyle(color: Colors.white),
+              labelSmall: TextStyle(color: Color(0xFF57636C)))),
+      home: const MyHomePage(title: 'Notifications'),
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
     );
@@ -77,47 +65,112 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+          // TRY THIS: Try changing the color here to a specific color (to
+          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+          // change color while the other colors stay the same.
+          backgroundColor: Theme.of(context).focusColor,
+
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(
+            widget.title,
+            style: TextStyle(
+              color: Theme.of(context).primaryTextTheme.displayLarge?.color,
+            ),
+          )),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomSlidingSegmentedControl(
+                    children: const {1: Text("Active"), 2: Text("Inactive")},
+                    onValueChanged: (int newValue) {},
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey),
+                    thumbDecoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  Icon(
+                    Icons.alarm,
+                    color: Theme.of(context).primaryTextTheme.labelSmall?.color,
+                    size: 26,
+                  ),
+                  Icon(
+                    Icons.refresh_rounded,
+                    color: Theme.of(context).primaryTextTheme.labelSmall?.color,
+                    size: 26,
+                  ),
+                  Icon(FontAwesomeIcons.solidBell,
+                      color:
+                          Theme.of(context).primaryTextTheme.labelSmall?.color,
+                      size: 20),
+                ],
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Divider(
+              color: Theme.of(context).primaryTextTheme.labelSmall?.color,
+              thickness: 1,
+              indent: 16,
+              endIndent: 16,
+            ),
+            ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(12),
+              children: const [
+                Card(
+                    color: Colors.white,
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    elevation: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: SizedBox(
+                            height: 75,
+                            width: 140,
+                            child: Text(
+                              "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              softWrap: true,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.access_alarm_rounded,
+                              color: Color(0xFFB36823),
+                              size: 18,
+                            ),
+                            Text(
+                              "16:00",
+                              style: TextStyle(color: Colors.black87),
+                            )
+                          ],
+                        )
+                      ],
+                    )),
+              ],
             ),
           ],
         ),
