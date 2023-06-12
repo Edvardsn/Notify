@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:husk/navbar.dart';
 
 void main() => runApp(
       DevicePreview(
@@ -130,56 +131,87 @@ class _MyHomePageState extends State<MyHomePage> {
             ListView(
               shrinkWrap: true,
               padding: const EdgeInsets.all(12),
-              children: const [
+              children: [
                 Card(
-                    color: Colors.white,
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    elevation: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
+                  color: Colors.white,
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  elevation: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Flexible(
+                        flex: 3,
+                        child: Padding(
                           padding: EdgeInsets.all(16),
-                          child: SizedBox(
-                            height: 75,
-                            width: 140,
-                            child: Text(
-                              "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
-                              style: TextStyle(
-                                  color: Colors.black87, fontSize: 14),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
-                              softWrap: true,
-                            ),
+                          child: Text(
+                            "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
+                            style:
+                                TextStyle(color: Colors.black87, fontSize: 14),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: true,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                      ),
+                      const Flexible(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Text(
+                                "16:00",
+                                style: TextStyle(
+                                    color: Colors.black87, fontSize: 14),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                softWrap: true,
+                              ),
+                              Text("10/07/2023")
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Flexible(
+                        flex: 1,
+                        child: Row(
                           children: [
+                            Text(
+                              "1h",
+                              style: TextStyle(color: Colors.black87),
+                            ),
                             Icon(
-                              Icons.access_alarm_rounded,
+                              FontAwesomeIcons.solidBell,
                               color: Color(0xFFB36823),
                               size: 18,
-                            ),
-                            Text(
-                              "16:00",
-                              style: TextStyle(color: Colors.black87),
                             )
                           ],
-                        )
-                      ],
-                    )),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.refresh_rounded,
+                              color: Colors.blueAccent.shade700,
+                              size: 28,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: const NavBar(),
+
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
