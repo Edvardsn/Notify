@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Card(
                   color: Colors.white,
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   elevation: 0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
