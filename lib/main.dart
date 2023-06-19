@@ -53,6 +53,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  final List<Widget> _notif_type = <Widget>[
+    const Text('Active', style: TextStyle(color: Colors.black87)),
+    const Text('Inactive', style: TextStyle(color: Colors.black87))
+  ];
+  final List<bool> _selectedFruits = <bool>[true, false];
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -66,6 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var deviceData = MediaQuery.of(context);
+
+    var screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -92,33 +102,75 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CustomSlidingSegmentedControl(
-                    children: const {1: Text("Active"), 2: Text("Inactive")},
-                    onValueChanged: (int newValue) {},
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey),
-                    thumbDecoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    flex: 30,
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8))),
+                      child: ToggleButtons(
+                        direction: Axis.horizontal,
+                        onPressed: (int index) {
+                          setState(() {
+                            // The button that is tapped is set to true, and the others to false.
+                            for (int i = 0; i < _selectedFruits.length; i++) {
+                              _selectedFruits[i] = i == index;
+                            }
+                          });
+                        },
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        hoverColor: Colors.black38,
+                        disabledColor: Colors.white60,
+                        color: Colors.white,
+                        fillColor: Colors.white,
+                        borderColor: Colors.grey,
+                        constraints: const BoxConstraints(
+                          minHeight: 40.0,
+                          minWidth: 80.0,
+                        ),
+                        isSelected: _selectedFruits,
+                        children: _notif_type,
+                      ),
                     ),
                   ),
-                  Icon(
-                    Icons.alarm,
-                    color: Theme.of(context).primaryTextTheme.labelSmall?.color,
-                    size: 26,
-                  ),
-                  Icon(
-                    Icons.refresh_rounded,
-                    color: Theme.of(context).primaryTextTheme.labelSmall?.color,
-                    size: 26,
-                  ),
-                  Icon(FontAwesomeIcons.solidBell,
+                  const Spacer(flex: 15),
+                  Flexible(
+                    flex: 21,
+                    fit: FlexFit.tight,
+                    child: Icon(
+                      Icons.alarm,
                       color:
                           Theme.of(context).primaryTextTheme.labelSmall?.color,
-                      size: 20),
+                      size: 26,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 14,
+                    fit: FlexFit.tight,
+                    child: Icon(
+                      Icons.refresh_rounded,
+                      color:
+                          Theme.of(context).primaryTextTheme.labelSmall?.color,
+                      size: 26,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 20,
+                    fit: FlexFit.tight,
+                    child: Icon(FontAwesomeIcons.solidBell,
+                        color: Theme.of(context)
+                            .primaryTextTheme
+                            .labelSmall
+                            ?.color,
+                        size: 20),
+                  ),
+                  const Spacer(flex: 15)
                 ],
               ),
             ),
@@ -130,78 +182,130 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListView(
               shrinkWrap: true,
-              padding: const EdgeInsets.all(12),
               children: [
                 Card(
                   color: Colors.white,
-                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  elevation: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Flexible(
-                        flex: 3,
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text(
-                            "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
-                            style:
-                                TextStyle(color: Colors.black87, fontSize: 14),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            softWrap: true,
-                          ),
-                        ),
-                      ),
-                      const Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Text(
-                                "16:00",
+                  margin: const EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Flexible(
+                            flex: 30,
+                            fit: FlexFit.loose,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: Text(
+                                "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
                                 style: TextStyle(
-                                    color: Colors.black87, fontSize: 14),
+                                    color: Colors.black87,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 softWrap: true,
                               ),
-                              Text("10/07/2023")
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      const Flexible(
-                        flex: 1,
-                        child: Row(
-                          children: [
-                            Text(
-                              "1h",
-                              style: TextStyle(color: Colors.black87),
+                          Flexible(
+                            flex: 21,
+                            fit: FlexFit.loose,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "16:00",
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    softWrap: true,
+                                  ),
+                                  Text(
+                                    "10/07/2023",
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .primaryTextTheme
+                                            .labelSmall
+                                            ?.color,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
                             ),
-                            Icon(
-                              FontAwesomeIcons.solidBell,
-                              color: Color(0xFFB36823),
-                              size: 18,
-                            )
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.refresh_rounded,
-                              color: Colors.blueAccent.shade700,
-                              size: 28,
+                          ),
+                          const Flexible(
+                            flex: 14,
+                            fit: FlexFit.loose,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 1),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "1h",
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.solidBell,
+                                    color: Color(0xFFB36823),
+                                    size: 18,
+                                  )
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Flexible(
+                            flex: 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "30d",
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Icon(
+                                  Icons.repeat_rounded,
+                                  color: Colors.blueAccent.shade700,
+                                  size: 28,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Flexible(
+                            flex: 15,
+                            fit: FlexFit.loose,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.radio_button_off,
+                                  color: Theme.of(context)
+                                      .primaryTextTheme
+                                      .labelSmall
+                                      ?.color,
+                                  size: 28,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
