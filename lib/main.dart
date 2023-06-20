@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:husk/navbar.dart';
 
@@ -22,6 +21,9 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           primaryColor: const Color(0xFF14181b),
           focusColor: const Color(0xFF0A0C0E),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.green.shade800,
+          ),
           primaryTextTheme: const TextTheme(
               displayLarge: TextStyle(color: Colors.white),
               labelSmall: TextStyle(color: Color(0xFF57636C)))),
@@ -100,13 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
+              padding: const EdgeInsets.fromLTRB(16, 30, 10, 5),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
+                    flex: 28,
                     fit: FlexFit.loose,
-                    flex: 30,
                     child: Container(
                       height: 40,
                       decoration: BoxDecoration(
@@ -139,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  const Spacer(flex: 15),
+                  const Spacer(flex: 2),
                   Flexible(
                     flex: 21,
                     fit: FlexFit.tight,
@@ -197,51 +199,45 @@ class _MyHomePageState extends State<MyHomePage> {
                           const Flexible(
                             flex: 30,
                             fit: FlexFit.loose,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                              child: Text(
-                                "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                softWrap: true,
-                              ),
+                            child: Text(
+                              "Take out the trash and prepare dinner and do a lot of stuff that does not need to be done or something.",
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              softWrap: true,
                             ),
                           ),
                           Flexible(
                             flex: 21,
                             fit: FlexFit.loose,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "16:00",
-                                    style: TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    softWrap: true,
-                                  ),
-                                  Text(
-                                    "10/07/2023",
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryTextTheme
-                                            .labelSmall
-                                            ?.color,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "16:00",
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: true,
+                                ),
+                                Text(
+                                  "10/07/2023",
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .primaryTextTheme
+                                          .labelSmall
+                                          ?.color,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              ],
                             ),
                           ),
                           const Flexible(

@@ -77,7 +77,9 @@ class NavBar extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: FloatingActionButton(
-                      backgroundColor: Colors.green.shade900,
+                      backgroundColor: Theme.of(context)
+                          .floatingActionButtonTheme
+                          .focusColor,
                       child: const Icon(
                         Icons.add,
                         color: Colors.white,
