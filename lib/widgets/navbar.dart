@@ -47,28 +47,32 @@ class NavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              IconButton(
-                color: Colors.transparent,
-                icon: const Icon(
-                  Icons.home_rounded,
-                  color: Color(0xFF9299A1),
-                  size: 32,
+              Flexible(
+                child: IconButton(
+                  color: Colors.transparent,
+                  icon: const Icon(
+                    Icons.home_rounded,
+                    color: Color(0xFF9299A1),
+                    size: 32,
+                  ),
+                  onPressed: () {
+                    print('IconButton pressed ...');
+                  },
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
-                },
               ),
-              IconButton(
-                color: Colors.transparent,
-                iconSize: 30,
-                icon: const Icon(
-                  Icons.calendar_today_outlined,
-                  color: Color(0xFF9299A1),
-                  size: 24,
+              Flexible(
+                child: IconButton(
+                  color: Colors.transparent,
+                  iconSize: 30,
+                  icon: const Icon(
+                    Icons.calendar_today_outlined,
+                    color: Color(0xFF9299A1),
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    print('IconButton pressed ...');
+                  },
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
-                },
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
