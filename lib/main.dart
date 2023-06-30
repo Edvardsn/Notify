@@ -1,17 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:husk/data/notifications_api.dart';
+import 'package:husk/models/notification.dart';
+import 'package:flutter/material.dart' hide Notification;
+import 'package:device_preview/device_preview.dart';
+import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
+import 'package:husk/themes/blue_theme.dart';
 import 'package:husk/widgets/navbar.dart';
 import 'package:husk/themes/dark_theme.dart';
-import 'package:husk/widgets/notification_header.dart';
 import 'package:husk/widgets/notification_tile.dart';
 
-void main() => runApp(
-      DevicePreview(
-        builder: (context) => const MyApp(), // Wrap your app
-      ),
-    );
+void main() async {
+  await Hive.initFlutter();
+  runApp(
+    DevicePreview(
+      builder: (context) => const MyApp(), // Wrap your app
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,8 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: DarkTheme.themeData,
+      title: 'Husk',
+      theme: BlueTheme.themeData,
       home: const MyHomePage(title: 'Notifications'),
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
@@ -44,52 +50,52 @@ class _MyHomePageState extends State<MyHomePage> {
     var deviceData = MediaQuery.of(context);
     var screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).focusColor,
-        title: Text(widget.title),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          // const NotificationHeader(),
-          // Divider(
-          //   color: Theme.of(context).primaryTextTheme.labelSmall?.color,
-          //   thickness: 1,
-          //   indent: 16,
-          //   endIndent: 16,
-          // ),
-          Flexible(
-            flex: 8,
-            child: ListView(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.normal),
-              scrollDirection: Axis.vertical,
-              children: [
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-                NotificationTile(),
-              ],
+    // ignore: unused_local_variable
+    var test = Notification(
+        title: "Something that despereatley needs to be done",
+        timeOfNotification: DateTime.now(),
+        id: 1);
+
+    return BlocProvider(
+      create: (context) => NotificationDashboardBloc(api: NotificationsApi()),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).canvasColor,
+        appBar: AppBar(
+          
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          title: Text(widget.title),
+          
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // const NotificationHeader(),
+            // Divider(
+            //   color: Theme.of(context).primaryTextTheme.labelSmall?.color,
+            //   thickness: 1,
+            //   indent: 16,
+            //   endIndent: 16,
+            // ),
+            Flexible(
+              flex: 8,
+              child: ListView(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(
+                    decelerationRate: ScrollDecelerationRate.normal),
+                scrollDirection: Axis.vertical,
+                children: [
+                  NotificationTile(notif: test),
+                  // NotificationTile(),
+                  // NotificationTile(),
+                ],
+              ),
             ),
-          ),
-          const Spacer(flex: 2)
-        ],
+            const Spacer(flex: 2)
+          ],
+        ),
+        bottomNavigationBar: const NavBar(),
       ),
-      bottomNavigationBar: const NavBar(),
     );
   }
 }

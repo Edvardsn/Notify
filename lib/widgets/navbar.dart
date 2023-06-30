@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -9,8 +11,8 @@ class NavBar extends StatelessWidget {
       width: double.infinity,
       height: 90,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-      ),
+          // color: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+          ),
       child: Stack(
         children: [
           Column(
@@ -18,20 +20,23 @@ class NavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Material(
-                color: Theme.of(context).focusColor,
+                color:
+                    Theme.of(context).bottomNavigationBarTheme.backgroundColor,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
-                ),
+                ), 
                 child: Container(
                   width: double.infinity,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).focusColor,
+                    color: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor,
                     boxShadow: const [
                       BoxShadow(
                         blurRadius: 10,
-                        color: Color(0x1A57636C),
+                        color: Colors.red,
                         offset: Offset(0, -10),
                         spreadRadius: 0.1,
                       )
@@ -49,10 +54,14 @@ class NavBar extends StatelessWidget {
             children: [
               Flexible(
                 child: IconButton(
-                  color: Colors.transparent,
-                  icon: const Icon(
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
+                  icon: Icon(
                     Icons.home_rounded,
-                    color: Color(0xFF9299A1),
+                    color: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .selectedItemColor,
                     size: 32,
                   ),
                   onPressed: () {
@@ -62,11 +71,15 @@ class NavBar extends StatelessWidget {
               ),
               Flexible(
                 child: IconButton(
-                  color: Colors.transparent,
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .selectedItemColor,
                   iconSize: 30,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.calendar_today_outlined,
-                    color: Color(0xFF9299A1),
+                    color: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .selectedItemColor,
                     size: 24,
                   ),
                   onPressed: () {
@@ -81,9 +94,13 @@ class NavBar extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: FloatingActionButton(
-                      backgroundColor: Theme.of(context)
-                          .floatingActionButtonTheme
-                          .focusColor,
+                      backgroundColor: context
+                              .read<NotificationDashboardBloc>()
+                              .state
+                              .selectedNotifications
+                              .isEmpty
+                          ? Colors.blue
+                          : Colors.red,
                       child: const Icon(
                         Icons.add,
                         color: Colors.white,
