@@ -6,7 +6,7 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:device_preview/device_preview.dart';
 import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:husk/themes/blue_theme.dart';
-import 'package:husk/widgets/navbar.dart';
+import 'package:husk/widgets/navbar_old.dart';
 import 'package:husk/themes/dark_theme.dart';
 import 'package:husk/widgets/notification_tile.dart';
 
@@ -61,10 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
-          
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           title: Text(widget.title),
-          
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -94,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const Spacer(flex: 2)
           ],
         ),
-        bottomNavigationBar: const NavBar(),
+        bottomNavigationBar: const NavBarOld(),
       ),
     );
   }
