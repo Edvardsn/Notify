@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
       title: 'Husk',
       theme: BlueTheme.themeData,
       home: const MyHomePage(title: 'Notifications'),
-      locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
     );
   }
@@ -74,24 +73,26 @@ class _MyHomePageState extends State<MyHomePage> {
             const Spacer(flex: 3),
             Expanded(
               flex: 65,
-              child: ListView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.normal),
-                scrollDirection: Axis.vertical,
-                children: [
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                  NotificationTile(notif: test),
-                ],
+              child: BlocBuilder<NotificationDashboardBloc,
+                  NotificationDashboardState>(
+                builder: (context, state) {
+                  if (state.status == NotificationDashboardStatus.loading) {
+                    return const CircularProgressIndicator(
+                      strokeWidth: 10,
+                    );
+                  } else {
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.normal),
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        for (final notification in state.notifications)
+                          NotificationTile(notif: notification)
+                      ],
+                    );
+                  }
+                },
               ),
             ),
             Flexible(
@@ -118,8 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       } else {
                         return FloatingActionButton(
                             onPressed: () => {
-                                  context.read<NotificationDashboardBloc>().add(
-                                      const NotificationRemovedSelectedEvent())
+                                  context
+                                      .read<NotificationDashboardBloc>()
+                                      .add(const NotificationAddedEvent())
                                 },
                             backgroundColor: Colors.red,
                             shape: const RoundedRectangleBorder(

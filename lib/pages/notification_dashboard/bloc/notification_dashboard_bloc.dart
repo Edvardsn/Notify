@@ -21,9 +21,10 @@ class NotificationDashboardBloc
         notifications = api.getNotifications(),
         super(const NotificationDashboardState()) {
     on<NotificationSelectedEvent>(_onSelectedNotification);
-    on<NotificationRemovedSelectedEvent>(_onRemoveSelectedNotifications);
+    on<NotificationAddedEvent>(_onRemoveSelectedNotifications);
   }
 
+  /// When a notification is selected
   FutureOr<void> _onSelectedNotification(NotificationSelectedEvent event,
       Emitter<NotificationDashboardState> emit) {
     /// Extract existing selected notifications
@@ -39,9 +40,9 @@ class NotificationDashboardBloc
     emit(newState);
   }
 
+  /// When selected notifications are removed
   FutureOr<void> _onRemoveSelectedNotifications(
-      NotificationRemovedSelectedEvent event,
-      Emitter<NotificationDashboardState> emit) {
+      NotificationAddedEvent event, Emitter<NotificationDashboardState> emit) {
     emit(state.copyWith(
         null, null, List.from(state.selectedNotifications)..clear()));
   }

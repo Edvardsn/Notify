@@ -5,14 +5,10 @@ Får notification av notification_state. (state)
 
 <!-- TODO -->
 
-- Lag button color theme med farga.
+- NotificationInFocus field på dashboard bloc. Trenger å kunne edit en notification. onPressed -> NotificationFocusedEvent etc.
+- Oppdater removeNotifications. Må også fjerne samme notifications i allNotifications.
 - Builder pattern på state når copyWith kjøres
 - Bruk emojis (Text scaling factor???)
-
-- Lag copyWith for Notification slik at state
-- Koble Bloc opp i mot Main
-- Koble API opp i mot bloc
-- Inject'e notificaton inni ListView
 
 <!-- ?New -->
 

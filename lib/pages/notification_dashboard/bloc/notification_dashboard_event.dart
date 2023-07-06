@@ -21,3 +21,8 @@ final class NotificationRemovedSelectedEvent
     extends NotificationDashboardEvent {
   const NotificationRemovedSelectedEvent();
 }
+
+/// An event which signals the creation of a new notification
+final class NotificationAddedEvent extends NotificationDashboardEvent {
+  const NotificationAddedEvent();
+}

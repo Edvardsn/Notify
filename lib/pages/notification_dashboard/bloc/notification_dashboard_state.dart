@@ -14,7 +14,7 @@ final class NotificationDashboardState extends Equatable {
   final List<Notification> notifications;
   final List<Notification> selectedNotifications;
 
-  /// The criteria for what constitutes a different notification for the Equatable comparison
+  /// The criteria for what constitutes a different notification for the comparison provided by the Equatable
   @override
   List<Object> get props => [status, notifications, selectedNotifications];
 

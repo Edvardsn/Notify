@@ -31,13 +31,15 @@ class NotificationsApi {
   /// Saves a [notification].
   ///
   /// If a [notification] with the same id already exists, it will be replaced.
-
   Future<void> savenotification(Notification notification) async {
-    Hive.openBox("notifications");
-    // dataSource.add(notification);
+  var source = Hive.openBox(DATABASE);
+
+  Hive.box(DATABASE)
+  
   }
 
-  /// Deletes the `notification` with the given id.
+
+
   ///
   /// If no `notification` with the given id exists, a [notificationNotFoundException] error is
   /// thrown.
