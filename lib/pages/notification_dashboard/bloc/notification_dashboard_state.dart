@@ -16,7 +16,7 @@ final class NotificationDashboardState extends Equatable {
 
   /// The criteria for what constitutes a different notification for the Equatable comparison
   @override
-  List<Object> get props => [status, notifications];
+  List<Object> get props => [status, notifications, selectedNotifications];
 
   /// A constructor for creating a copy of the state of the dashboard with the option of
   /// modifying existing fields.

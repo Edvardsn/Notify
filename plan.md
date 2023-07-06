@@ -16,21 +16,67 @@ Får notification av notification_state. (state)
 
 <!-- ?New -->
 
-## Keybindings
+# Keybindings (Vscode)
 
-**Edit**
+## **Div**
 
-- **Multi-cursor** CTRL+ALT+UP/DOWN
+---
+
+- **Editor action** CTRL + .
+- **Intellisense** CTRL + SPACE
+
+## **Edit**
+
+---
+
+### Selection
+
+- **Multi-cursor** CTRL+ALT+UP/DOWN (alt. ALT+MOUSECLICK)
 - **Block selection** CTRL+D
 - **Line selection** CTRL+L
 - **End of line** CTRL+E
+- **Move line** ALT+UP/DOWN
 
-**Navigation**
+### Alter
+
+- **Cut line** CTRL+X
+- **Duplicate line (Selection)** CTRL+B
+
+## **Navigation**
+
+---
+
+### Editor
+
+- **Jump downwards** CTRL+DOWN
+- **Jump upwards** CTRL+UP
+- **Move camera downwards** CTRL+SHIFT+DOWN
+- **Move camera upwards** CTRL+SHIFT+UP
+
+### Tabs and windows
 
 - **Change tab** ALT+LEFT/RIGHT (view open previous editor)
+- **Move tab** CTRL+SHIFT+PAGE UP/DOWN
 - **Close tab** CTRL+W
+- **New window** CTRL+SHIFT+N
+- **Close window** CTRL+SHIFT+W
+
+### File and folders
+
 - **Open file** CTRL+P
 - **New file** CTRL+N
+
+## Application
+
+---
+
+(In main file)
+
+- **Run** CTRL+F5
+- **Debug** F5
+- **Hot restart** CTRL+SHIFT+F5
+- **Hot reload** CTRL+S
+- **Close** SHIFT+F5
 
 <!-- !Old -->
 
