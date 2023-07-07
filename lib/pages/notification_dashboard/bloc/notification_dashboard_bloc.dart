@@ -20,12 +20,14 @@ class NotificationDashboardBloc
       : _api = api,
         notifications = api.getNotifications(),
         super(const NotificationDashboardState()) {
-    on<NotificationSelectedEvent>(_onSelectedNotification);
-    on<NotificationAddedEvent>(_onRemoveSelectedNotifications);
+    on<NotificationSelectedEvent>(_onNotificationSelected);
+    on<NotificationRemovedSelectedEvent>(_onNotificationsSelectedRemoved);
+    on<NotificationsSubscriptionEvent>(_onNotificationsSubscription);
+    on<NotificationCreatedEvent>(_onNotificationCreation);
   }
 
   /// When a notification is selected
-  FutureOr<void> _onSelectedNotification(NotificationSelectedEvent event,
+  FutureOr<void> _onNotificationSelected(NotificationSelectedEvent event,
       Emitter<NotificationDashboardState> emit) {
     /// Extract existing selected notifications
     List<Notification> selectedNotifs = List.from(state.selectedNotifications);
@@ -41,9 +43,28 @@ class NotificationDashboardBloc
   }
 
   /// When selected notifications are removed
-  FutureOr<void> _onRemoveSelectedNotifications(
-      NotificationAddedEvent event, Emitter<NotificationDashboardState> emit) {
-    emit(state.copyWith(
-        null, null, List.from(state.selectedNotifications)..clear()));
+  FutureOr<void> _onNotificationsSelectedRemoved(
+      NotificationRemovedSelectedEvent event,
+      Emitter<NotificationDashboardState> emit) {
+    List allNotifs = List.from(state.notifications);
+
+    allNotifs.removeWhere(
+        (element) => (state.selectedNotifications.contains(element)));
+
+    emit(state.copyWith(null, allNotifs.cast<Notification>(), const []));
+  }
+
+  /// When a notification is created
+  FutureOr<void> _onNotificationCreation(NotificationCreatedEvent event,
+      Emitter<NotificationDashboardState> emit) {}
+
+  /// When selected notifications are removed
+  FutureOr<void> _onNotificationsSubscription(
+      NotificationsSubscriptionEvent event,
+      Emitter<NotificationDashboardState> emit) async {
+    var allNotifications = await _api.getNotifications();
+
+    emit(state.copyWith(NotificationDashboardStatus.loaded,
+        allNotifications as List<Notification>?, null));
   }
 }

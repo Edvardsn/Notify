@@ -58,7 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 1);
 
     return BlocProvider(
-      create: (context) => NotificationDashboardBloc(api: NotificationsApi()),
+      create: (context) => NotificationDashboardBloc(api: NotificationsApi())
+        ..add(const NotificationsSubscriptionEvent()),
       child: Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
@@ -121,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: () => {
                                   context
                                       .read<NotificationDashboardBloc>()
-                                      .add(const NotificationAddedEvent())
+                                      .add(const NotificationCreatedEvent())
                                 },
                             backgroundColor: Colors.red,
                             shape: const RoundedRectangleBorder(

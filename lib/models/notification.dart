@@ -7,10 +7,10 @@ import 'package:hive/hive.dart';
 /// [Notifications] are immutable and can be copied using [copyWith].
 @HiveType(typeId: 1)
 class Notification extends Equatable {
-  const Notification(
+  Notification(
       {required this.id,
-      required this.title,
-      required this.timeOfNotification,
+      this.title = "",
+      this.timeOfNotification,
       this.recurringTimeframe = Duration.zero,
       this.preNotificationAlertTime = Duration.zero});
 
@@ -23,7 +23,7 @@ class Notification extends Equatable {
 
   /// The time and date of the notification
   @HiveField(2)
-  final DateTime timeOfNotification;
+  final DateTime? timeOfNotification;
 
   /// A duration representing the interval the notification should be repeated.
   @HiveField(3)

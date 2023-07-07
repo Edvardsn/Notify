@@ -19,13 +19,13 @@ class _NotificationTileState extends State<NotificationTile> {
   bool selected = false;
 
   late String timeOfDay =
-      DateFormat("Hm").format(widget.notif.timeOfNotification);
+      DateFormat("Hm").format(widget._widget!.timeOfNotification);
 
   late String timeOfMonth;
   late String dayOfMonth;
 
-  late String dateOfNotification = DateFormat("$dayOfMonth/$timeOfMonth/y")
-      .format(widget.notif.timeOfNotification);
+  late String dateOfNotification =
+      DateFormat("$dayOfMonth/$timeOfMonth/y").format(widget.notif.title);
 
   /// Formats the given date to european format
   void _formatDate() {
