@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 ///
 ///
 // ignore: Deprecated by the Notification.
-@deprecated
+@Deprecated("Outdated widget. See NavBar for updated version.")
 class NotificationOld extends StatelessWidget {
   const NotificationOld({super.key});
 
