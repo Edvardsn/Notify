@@ -19,18 +19,24 @@ class _NotificationTileState extends State<NotificationTile> {
   bool selected = false;
 
   late String timeOfDay =
-      DateFormat("Hm").format(widget.notif.timeOfNotification);
+      DateFormat("Hm").format(widget._widget!.timeOfNotification);
 
   late String timeOfMonth;
+  late String dayOfMonth;
 
   late String dateOfNotification =
-      DateFormat("d/$timeOfMonth/y").format(widget.notif.timeOfNotification);
+      DateFormat("$dayOfMonth/$timeOfMonth/y").format(widget.notif.title);
 
   /// Formats the given date to european format
   void _formatDate() {
     if (DateFormat("M").format(widget.notif.timeOfNotification).length == 1) {
       timeOfMonth =
           "0${DateFormat("M").format(widget.notif.timeOfNotification)}";
+    }
+
+    if (DateFormat("d").format(widget.notif.timeOfNotification).length == 1) {
+      dayOfMonth =
+          "0${DateFormat("d").format(widget.notif.timeOfNotification)}";
     }
   }
 
@@ -39,112 +45,164 @@ class _NotificationTileState extends State<NotificationTile> {
     _formatDate();
 
     return Card(
-      margin: const EdgeInsets.all(12),
       color: Theme.of(context).cardColor,
+      margin: const EdgeInsets.fromLTRB(10, 4, 10, 4),
       child: ListTile(
-        horizontalTitleGap: 1,
-        contentPadding: const EdgeInsets.all(8),
-        isThreeLine: true,
-        // dense: true,
-        title: Text(widget.notif.title),
-        //   style: const TextStyle(
-        //       color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w600),
-        //   overflow: TextOverflow.ellipsis,
-        //   maxLines: 2,
-        //   softWrap: true,
-        // ),
+        visualDensity: VisualDensity.compact,
+        contentPadding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+        title: NotificationTitle(widget: widget),
         titleAlignment: ListTileTitleAlignment.center,
         subtitle: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    timeOfDay,
-                    style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: true,
-                  ),
-                  Text(
-                    dateOfNotification,
-                    maxLines: 1,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.labelSmall?.color,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700),
-                  )
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "1h",
-                      style: selected
-                          ? TextStyle(
-                              color: const Color.fromARGB(255, 28, 45, 59),
-                              decoration: TextDecoration.lineThrough,
-                              fontSize: 40,
-                            )
-                          : TextStyle(
-                              color: Color.fromARGB(255, 207, 47, 207),
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                    ),
-                    Icon(
-                      FontAwesomeIcons.solidBell,
-                      color: Color(0xFFB36823),
-                      size: 18,
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "30d",
-                      style: TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.w700),
-                    ),
-                    Icon(
-                      Icons.repeat_rounded,
-                      color: Colors.blueAccent.shade700,
-                      size: 28,
-                    ),
-                  ],
-                ),
-              ),
+              TimeSlot(
+                  timeOfDay: timeOfDay, dateOfNotification: dateOfNotification),
+              Reminder(selected: selected),
+              const Recurring(),
             ],
           ),
         ),
         trailing: IconButton(
           icon: selected
-              ? const Icon(Icons.radio_button_off)
-              : const Icon(Icons.radio_button_checked_rounded),
-          color: Theme.of(context).primaryTextTheme.labelSmall?.color,
-          iconSize: 32,
+              ? const Icon(Icons.radio_button_checked_rounded)
+              : const Icon(Icons.radio_button_off_rounded),
+          color: Colors.grey.shade600,
+          iconSize: 24,
           onPressed: () {
             setState(() {
               selected = !selected;
             });
-            context
-                .read<NotificationDashboardBloc>()
-                .add(NotificationSelectedEvent(notification: widget.notif));
+            context.read<NotificationDashboardBloc>().add(
+                NotificationSelectedEvent(
+                    notification: widget.notif, isSelected: selected));
             print(this.selected);
           },
         ),
+      ),
+    );
+  }
+}
+
+class NotificationTitle extends StatelessWidget {
+  const NotificationTitle({
+    super.key,
+    required this.widget,
+  });
+
+  final NotificationTile widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(widget.notif.title,
+        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis);
+  }
+}
+
+class TimeSlot extends StatelessWidget {
+  const TimeSlot({
+    super.key,
+    required this.timeOfDay,
+    required this.dateOfNotification,
+  });
+
+  final String timeOfDay;
+  final String dateOfNotification;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          timeOfDay,
+          style: TextStyle(
+              color: Theme.of(context).textTheme.labelMedium?.color,
+              fontSize: 8,
+              fontWeight: FontWeight.normal),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          softWrap: true,
+        ),
+        Text(
+          dateOfNotification,
+          maxLines: 1,
+          style: TextStyle(
+              color: Theme.of(context).textTheme.labelSmall?.color,
+              fontSize: 7,
+              fontWeight: FontWeight.w100),
+        )
+      ],
+    );
+  }
+}
+
+class Recurring extends StatelessWidget {
+  const Recurring({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "30d",
+            style: TextStyle(
+                color: Theme.of(context).textTheme.labelMedium?.color,
+                fontWeight: FontWeight.normal,
+                fontSize: 8),
+          ),
+          Icon(
+            Icons.repeat_rounded,
+            color: Colors.blueAccent.shade700,
+            size: 16,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Reminder extends StatelessWidget {
+  const Reminder({
+    super.key,
+    required this.selected,
+  });
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "1h",
+            style: selected
+                ? TextStyle(
+                    color: Theme.of(context).textTheme.labelSmall?.color,
+                    fontSize: 10,
+                  )
+                : TextStyle(
+                    color: Theme.of(context).textTheme.labelSmall?.color,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 8),
+          ),
+          const Icon(
+            FontAwesomeIcons.solidBell,
+            color: Color(0xFFB36823),
+            size: 12,
+          )
+        ],
       ),
     );
   }

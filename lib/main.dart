@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:husk/data/notifications_api.dart';
 import 'package:husk/models/notification.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:device_preview/device_preview.dart';
 import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:husk/themes/blue_theme.dart';
+import 'package:husk/widgets/navbar.dart';
 import 'package:husk/widgets/navbar_old.dart';
 import 'package:husk/themes/dark_theme.dart';
 import 'package:husk/widgets/notification_tile.dart';
@@ -29,7 +31,6 @@ class MyApp extends StatelessWidget {
       title: 'Husk',
       theme: BlueTheme.themeData,
       home: const MyHomePage(title: 'Notifications'),
-      locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
     );
   }
@@ -57,42 +58,88 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 1);
 
     return BlocProvider(
-      create: (context) => NotificationDashboardBloc(api: NotificationsApi()),
+      create: (context) => NotificationDashboardBloc(api: NotificationsApi())
+        ..add(const NotificationsSubscriptionEvent()),
       child: Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          centerTitle: false,
           title: Text(widget.title),
         ),
         body: Column(
+          //Total flex factor: 100
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // const NotificationHeader(),
-            // Divider(
-            //   color: Theme.of(context).primaryTextTheme.labelSmall?.color,
-            //   thickness: 1,
-            //   indent: 16,
-            //   endIndent: 16,
-            // ),
-            Flexible(
-              flex: 8,
-              child: ListView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.normal),
-                scrollDirection: Axis.vertical,
-                children: [
-                  NotificationTile(notif: test),
-                  // NotificationTile(),
-                  // NotificationTile(),
-                ],
+            const Spacer(flex: 3),
+            Expanded(
+              flex: 65,
+              child: BlocBuilder<NotificationDashboardBloc,
+                  NotificationDashboardState>(
+                builder: (context, state) {
+                  if (state.status == NotificationDashboardStatus.loading) {
+                    return const CircularProgressIndicator(
+                      strokeWidth: 10,
+                    );
+                  } else {
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.normal),
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        for (final notification in state.notifications)
+                          NotificationTile(notif: notification)
+                      ],
+                    );
+                  }
+                },
               ),
             ),
-            const Spacer(flex: 2)
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 15,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: BlocBuilder<NotificationDashboardBloc,
+                      NotificationDashboardState>(
+                    builder: (context, state) {
+                      if (state.selectedNotifications.isEmpty) {
+                        return FloatingActionButton(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(28),
+                            ),
+                          ),
+                          onPressed: () => {},
+                          backgroundColor: Colors.green,
+                          child: const Icon(Icons.add),
+                        );
+                      } else {
+                        return FloatingActionButton(
+                            onPressed: () => {
+                                  context
+                                      .read<NotificationDashboardBloc>()
+                                      .add(const NotificationCreatedEvent())
+                                },
+                            backgroundColor: Colors.red,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(28),
+                              ),
+                            ),
+                            child: const Icon(FontAwesomeIcons.trashCan));
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
-        bottomNavigationBar: const NavBarOld(),
+        bottomNavigationBar: const NavBar(),
       ),
     );
   }
