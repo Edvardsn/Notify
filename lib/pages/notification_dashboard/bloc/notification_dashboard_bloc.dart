@@ -65,6 +65,6 @@ class NotificationDashboardBloc
     var allNotifications = await _api.getNotifications();
 
     emit(state.copyWith(NotificationDashboardStatus.loaded,
-        allNotifications as List<Notification>?, null));
+        allNotifications, null));
   }
 }

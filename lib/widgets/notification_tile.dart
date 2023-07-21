@@ -19,24 +19,32 @@ class _NotificationTileState extends State<NotificationTile> {
   bool selected = false;
 
   late String timeOfDay =
-      DateFormat("Hm").format(widget._widget!.timeOfNotification);
+      DateFormat("Hm").format(widget.notif.timeOfNotification as DateTime);
 
   late String timeOfMonth;
   late String dayOfMonth;
 
-  late String dateOfNotification =
-      DateFormat("$dayOfMonth/$timeOfMonth/y").format(widget.notif.title);
+  late String dateOfNotification = DateFormat("$dayOfMonth/$timeOfMonth/y")
+      .format(widget.notif.title as DateTime);
 
   /// Formats the given date to european format
   void _formatDate() {
-    if (DateFormat("M").format(widget.notif.timeOfNotification).length == 1) {
-      timeOfMonth =
-          "0${DateFormat("M").format(widget.notif.timeOfNotification)}";
-    }
+    if (widget.notif.timeOfNotification != null) {
+      if (DateFormat("M")
+              .format(widget.notif.timeOfNotification as DateTime)
+              .length ==
+          1) {
+        timeOfMonth =
+            "0${DateFormat("M").format(widget.notif.timeOfNotification as DateTime)}";
+      }
 
-    if (DateFormat("d").format(widget.notif.timeOfNotification).length == 1) {
-      dayOfMonth =
-          "0${DateFormat("d").format(widget.notif.timeOfNotification)}";
+      if (DateFormat("d")
+              .format(widget.notif.timeOfNotification as DateTime)
+              .length ==
+          1) {
+        dayOfMonth =
+            "0${DateFormat("d").format(widget.notif.timeOfNotification as DateTime)}";
+      }
     }
   }
 

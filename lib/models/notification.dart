@@ -4,10 +4,10 @@ import 'package:hive/hive.dart';
 ///
 /// A Notifications and its details surrounding.
 ///
-/// [Notifications] are immutable and can be copied using [copyWith].
+/// [Notification]´s are immutable and can be copied using [copyWith].
 @HiveType(typeId: 1)
 class Notification extends Equatable {
-  Notification(
+  const Notification(
       {required this.id,
       this.title = "",
       this.timeOfNotification,

@@ -5,6 +5,7 @@ Får notification av notification_state. (state)
 
 <!-- TODO -->
 
+- Installer flutter lints package for code style.
 - NotificationInFocus field på dashboard bloc. Trenger å kunne edit en notification. onPressed -> NotificationFocusedEvent etc.
 - Oppdater removeNotifications. Må også fjerne samme notifications i allNotifications.
 - Builder pattern på state når copyWith kjøres
