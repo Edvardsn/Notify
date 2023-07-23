@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:husk/models/notification.dart';
 import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:intl/intl.dart';
 
 class NotificationTile extends StatefulWidget {
-  NotificationTile({super.key, required this.notif});
+  const NotificationTile({super.key, required this.notif});
 
-  Notification notif;
+  final Notification notif;
 
   @override
   State<NotificationTile> createState() => _NotificationTileState();

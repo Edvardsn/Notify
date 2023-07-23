@@ -13,17 +13,21 @@ import 'package:husk/themes/dark_theme.dart';
 import 'package:husk/widgets/notification_tile.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  HiveNotificationsApi notificationsApi = await HiveNotificationsApi();
+
   runApp(
     DevicePreview(
-      builder: (context) => const MyApp(), // Wrap your app
+      builder: (context) => MyApp(
+        notificationsApi: notificationsApi,
+      ), // Wrap your app
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.notificationsApi});
 
+  final HiveNotificationsApi notificationsApi;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,8 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 1);
 
     return BlocProvider(
-      create: (context) => NotificationDashboardBloc(api: NotificationsApi())
-        ..add(const NotificationsSubscriptionEvent()),
+      create: (context) =>
+          NotificationDashboardBloc(api: HiveNotificationsApi())
+            ..add(const NotificationsSubscriptionEvent()),
       child: Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
