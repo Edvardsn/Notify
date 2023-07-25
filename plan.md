@@ -5,10 +5,13 @@ Får notification av notification_state. (state)
 
 <!-- TODO -->
 
-Lær streams, await slik at list blir laget eller hele tiden bruke stream?
+Bruk f{(, {, character etc..} for navigasjon og %.
+Bruk n{j} og n{k} for navigasjon opp og ned.
 
 Implementer StreamController med broadcastStream() som oppdatere lista og added nye liste til stream slik at alle
 subscribers blir oppdatert. Observer pattern.
+
+Expection handling i feature layer, notificaiton tiles komponenter.
 
 - Installer flutter lints package for code style.
 - NotificationInFocus field på dashboard bloc. Trenger å kunne edit en notification. onPressed -> NotificationFocusedEvent etc.

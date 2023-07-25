@@ -1,6 +1,5 @@
-import 'package:husk/data/api/hive_notifications_api.dart';
 import 'package:husk/data/api/notifications_api.dart';
-import 'package:husk/models/notification.dart';
+import 'package:husk/data/model/notification.dart';
 
 class NotificationsRepository {
   /// The API for the data source to extract the necessary data
@@ -8,5 +7,6 @@ class NotificationsRepository {
 
   const NotificationsRepository({required NotificationsApi api}) : _api = api;
 
+  /// Returns a [Stream] of [List]s reflecting of stored [Notification]s
   Stream<List<Notification>> getNotifications() => _api.getNotifications();
 }

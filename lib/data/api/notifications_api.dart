@@ -1,4 +1,4 @@
-import '../../models/notification.dart';
+import '../model/notification.dart';
 
 /// An interface containing basic essential methods to manage notifications.
 abstract class NotificationsApi {
@@ -6,8 +6,8 @@ abstract class NotificationsApi {
   Stream<List<Notification>> getNotifications();
 
   /// Adds a [Notification] to the data source.
-  Future<void> addNotification();
+  Future<void> addNotification(Notification notification);
 
   /// Removes a [Notification] from the data source.
-  Future<void> removeNotification();
+  Future<void> removeNotification(Notification notification);
 }

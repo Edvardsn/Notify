@@ -2,24 +2,24 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 ///
-/// A Notifications and its details surrounding.
+/// A class representing a Notification and its properties.
 ///
-/// [Notification]´s are immutable and can be copied using [copyWith].
+/// [Notification]´s are immutable but can be copied using [copyWith].
 @HiveType(typeId: 1)
 class Notification extends Equatable {
   const Notification(
-      {required this.id,
-      this.title = "",
+      {this.id,
+      this.title,
       this.timeOfNotification,
-      this.recurringTimeframe = Duration.zero,
-      this.preNotificationAlertTime = Duration.zero});
+      this.recurringTimeframe,
+      this.preNotificationAlertTime});
 
   @HiveField(0)
-  final int id;
+  final int? id;
 
   /// The title of the notificaiton
   @HiveField(1)
-  final String title;
+  final String? title;
 
   /// The time and date of the notification
   @HiveField(2)
@@ -27,18 +27,18 @@ class Notification extends Equatable {
 
   /// A duration representing the interval the notification should be repeated.
   @HiveField(3)
-  final Duration recurringTimeframe;
+  final Duration? recurringTimeframe;
 
   /// A duration representing a given amount of time before the actual notification timeslot
   /// to be alerted.
   @HiveField(4)
-  final Duration preNotificationAlertTime;
+  final Duration? preNotificationAlertTime;
 
   @override
   List<Object?> get props =>
       [title, timeOfNotification, recurringTimeframe, preNotificationAlertTime];
 
-  /// Returns a copy of this `notification` with the given values updated.
+  /// Returns a copy of the [Notification] with the given values updated.
   ///
   /// {@macro notification_item}
   Notification copyWith(

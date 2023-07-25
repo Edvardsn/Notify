@@ -1,12 +1,12 @@
 part of 'notification_dashboard_bloc.dart';
 
 /// The different status types of the dashboard
-enum NotificationDashboardStatus { loading, loaded }
+enum NotificationDashboardStatus { loading, inactive, active }
 
 /// This class represents the state of the notification dashboard
 final class NotificationDashboardState extends Equatable {
   const NotificationDashboardState(
-      {this.status = NotificationDashboardStatus.loading,
+      {this.status = NotificationDashboardStatus.inactive,
       this.notifications = const [],
       this.selectedNotifications = const []});
 
@@ -14,7 +14,9 @@ final class NotificationDashboardState extends Equatable {
   final List<Notification> notifications;
   final List<Notification> selectedNotifications;
 
-  /// The criteria for what constitutes a different notification for the comparison provided by the Equatable
+  /// The properties that determines if the widget should be rebuilt upon changes.
+  ///
+  /// Used for the comparison provided by the [Equatable].
   @override
   List<Object> get props => [status, notifications, selectedNotifications];
 

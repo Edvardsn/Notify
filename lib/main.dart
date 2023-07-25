@@ -1,42 +1,47 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:husk/data/notifications_api.dart';
-import 'package:husk/models/notification.dart';
+import 'package:husk/data/api/hive_notifications_api.dart';
+import 'package:husk/domain/repository/notifications_repository.dart';
+import 'package:husk/data/model/notification.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:device_preview/device_preview.dart';
 import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:husk/themes/blue_theme.dart';
 import 'package:husk/widgets/navbar.dart';
-import 'package:husk/widgets/navbar_old.dart';
-import 'package:husk/themes/dark_theme.dart';
 import 'package:husk/widgets/notification_tile.dart';
 
 void main() async {
-  HiveNotificationsApi notificationsApi = await HiveNotificationsApi();
+  NotificationsRepository notificationsRepository =
+      NotificationsRepository(api: HiveNotificationsApi());
+
+  print("started application");
 
   runApp(
     DevicePreview(
       builder: (context) => MyApp(
-        notificationsApi: notificationsApi,
+        notificationsRepository: notificationsRepository,
       ), // Wrap your app
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.notificationsApi});
+  const MyApp(
+      {super.key, required NotificationsRepository notificationsRepository})
+      : _notificationsRepository = notificationsRepository;
 
-  final HiveNotificationsApi notificationsApi;
+  final NotificationsRepository _notificationsRepository;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Husk',
-      theme: BlueTheme.themeData,
-      home: const MyHomePage(title: 'Notifications'),
-      builder: DevicePreview.appBuilder,
-    );
+    return RepositoryProvider.value(
+        value: _notificationsRepository,
+        child: MaterialApp(
+          title: 'Husk',
+          theme: BlueTheme.themeData,
+          home: const MyHomePage(title: 'Notifications'),
+          builder: DevicePreview.appBuilder,
+        ));
   }
 }
 
@@ -52,19 +57,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    var deviceData = MediaQuery.of(context);
-    var screenWidth = MediaQuery.of(context).size.width;
-
-    // ignore: unused_local_variable
     var test = Notification(
         title: "Something that despereatley needs to be done",
         timeOfNotification: DateTime.now(),
         id: 1);
 
     return BlocProvider(
-      create: (context) =>
-          NotificationDashboardBloc(api: HiveNotificationsApi())
-            ..add(const NotificationsSubscriptionEvent()),
+      create: (context) => NotificationDashboardBloc(
+          repository: context.read<NotificationsRepository>())
+        ..add(const NotificationsSubscriptionEvent()),
       child: Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
@@ -118,16 +119,20 @@ class _MyHomePageState extends State<MyHomePage> {
                               Radius.circular(28),
                             ),
                           ),
-                          onPressed: () => {},
+                          onPressed: () => {
+                            print("test"),
+                            context
+                                .read<NotificationDashboardBloc>()
+                                .add(const NotificationCreatedEvent())
+                          },
                           backgroundColor: Colors.green,
                           child: const Icon(Icons.add),
                         );
                       } else {
                         return FloatingActionButton(
                             onPressed: () => {
-                                  context
-                                      .read<NotificationDashboardBloc>()
-                                      .add(const NotificationCreatedEvent())
+                                  context.read<NotificationDashboardBloc>().add(
+                                      const NotificationRemovedSelectedEvent())
                                 },
                             backgroundColor: Colors.red,
                             shape: const RoundedRectangleBorder(

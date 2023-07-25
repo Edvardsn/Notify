@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:husk/models/notification.dart';
+import 'package:husk/data/model/notification.dart';
 import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -23,8 +23,9 @@ class _NotificationTileState extends State<NotificationTile> {
   late String timeOfMonth;
   late String dayOfMonth;
 
-  late String dateOfNotification = DateFormat("$dayOfMonth/$timeOfMonth/y")
-      .format(widget.notif.title as DateTime);
+  late String dateOfNotification = "24/06/2023";
+  //DateFormat("$dayOfMonth/$timeOfMonth/y")
+  //  .format(widget.notif.title as DateTime);
 
   /// Formats the given date to european format
   void _formatDate() {
@@ -44,6 +45,10 @@ class _NotificationTileState extends State<NotificationTile> {
         dayOfMonth =
             "0${DateFormat("d").format(widget.notif.timeOfNotification as DateTime)}";
       }
+    } else {
+      timeOfDay = "1";
+      dayOfMonth = "1";
+      timeOfMonth = "1";
     }
   }
 
@@ -57,7 +62,7 @@ class _NotificationTileState extends State<NotificationTile> {
       child: ListTile(
         visualDensity: VisualDensity.compact,
         contentPadding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-        title: NotificationTitle(widget: widget),
+        title: NotificationTitle(title: widget.notif.title),
         titleAlignment: ListTileTitleAlignment.center,
         subtitle: Padding(
           padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -92,17 +97,24 @@ class _NotificationTileState extends State<NotificationTile> {
   }
 }
 
-class NotificationTitle extends StatelessWidget {
-  const NotificationTitle({
+class NotificationTitle extends StatefulWidget {
+  NotificationTitle({
     super.key,
-    required this.widget,
+    required this.title,
   });
 
-  final NotificationTile widget;
+  String? title;
 
   @override
+  State<NotificationTitle> createState() => _NotificationTitleState();
+}
+
+class _NotificationTitleState extends State<NotificationTitle> {
+  @override
   Widget build(BuildContext context) {
-    return Text(widget.notif.title,
+    widget.title ??= "";
+
+    return Text(widget.title as String,
         style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
         maxLines: 2,
         overflow: TextOverflow.ellipsis);
