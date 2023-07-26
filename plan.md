@@ -5,6 +5,12 @@ Får notification av notification_state. (state)
 
 <!-- TODO -->
 
+Implementer logging
+Implementer testing
+Implementer exception handling.
+
+Problem med streams, sendes ikke nye versjoner av box hvor liste av notifications finnes. Løses med logging?
+
 Bruk f{(, {, character etc..} for navigasjon og %.
 Bruk n{j} og n{k} for navigasjon opp og ned.
 

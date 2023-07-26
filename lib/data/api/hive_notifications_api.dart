@@ -9,7 +9,7 @@ class HiveNotificationsApi extends NotificationsApi {
       StreamController<List<Notification>>();
 
   static const String databaseKey = "notifications";
-  late Box<Notification> notificationStorage;
+  late final Box<Notification> notificationBox;
 
   /// Constructs the api
   HiveNotificationsApi() {
@@ -19,24 +19,26 @@ class HiveNotificationsApi extends NotificationsApi {
   /// Initiates Hive and the respective [Box] containing the relevant data.
   Future<void> initHive() async {
     await Hive.initFlutter();
-    notificationStorage = await Hive.openBox<Notification>(databaseKey);
 
-    List<Notification> notificationList =
-        Hive.box<Notification>(databaseKey).values.toList();
+    Hive.registerAdapter(NotificationAdapter());
 
-    List<Notification> emptylist = List.empty();
+    notificationBox = await Hive.openBox<Notification>(databaseKey);
 
-    if (notificationList.isEmpty) {
-      _notificationsStreamController.add(emptylist);
-    } else {
-      _notificationsStreamController.add(notificationList);
-    }
+    List<List<Notification>> notificationsList =
+        List<List<Notification>>.generate(
+            1, (index) => List.from(notificationBox.values));
+
+    Stream<List<Notification>> boxStream =
+        Stream.fromIterable(notificationsList);
+
+    _notificationsStreamController.addStream(boxStream);
   }
 
   /// Provides a [Stream] to the list containing all stored notifications.
   @override
   Stream<List<Notification>> getNotifications() {
-    return _notificationsStreamController.stream as Stream<List<Notification>>;
+    return _notificationsStreamController.stream.asBroadcastStream()
+        as Stream<List<Notification>>;
   }
 
   /// Stores a [Notification] in the Hive database.
@@ -45,19 +47,20 @@ class HiveNotificationsApi extends NotificationsApi {
   /// stored first in order to obtain the auto-increment-key, hence the first iteration of adding and deleting.
   @override
   Future<void> addNotification(Notification notification) async {
-    int autoIncrementedKey = await notificationStorage.add(notification);
-    await notificationStorage.delete(autoIncrementedKey);
-
-    await notificationStorage.put(
-        autoIncrementedKey, notification.copyWith(id: autoIncrementedKey));
-    throw UnimplementedError();
+    await notificationBox.add(notification);
+    // print(_notificationsStreamController.stream.length);
   }
 
-  /// Removes a [Notification] in the Hive database.
+  /// Removes a collection of [Notification]s in the Hive database.
   @override
-  Future<void> removeNotification(Notification notification) async {
-    await notificationStorage.delete(notification.id);
-    throw UnimplementedError();
+  Future<void> removeNotificationCollection(
+      Iterable<Notification> notifications) async {
+    List<int> notificationKeys = List.empty(growable: true);
+
+    for (var element in notifications) {
+      notificationKeys.add(element.key);
+    }
+    await notificationBox.deleteAll(notificationKeys);
   }
 }
 

@@ -58,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var test = Notification(
-        title: "Something that despereatley needs to be done",
-        timeOfNotification: DateTime.now(),
-        id: 1);
+      title: "Something that despereatley needs to be done",
+      timeOfNotification: DateTime.now(),
+    );
 
     return BlocProvider(
       create: (context) => NotificationDashboardBloc(

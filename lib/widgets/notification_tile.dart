@@ -89,7 +89,6 @@ class _NotificationTileState extends State<NotificationTile> {
             context.read<NotificationDashboardBloc>().add(
                 NotificationSelectedEvent(
                     notification: widget.notif, isSelected: selected));
-            print(this.selected);
           },
         ),
       ),

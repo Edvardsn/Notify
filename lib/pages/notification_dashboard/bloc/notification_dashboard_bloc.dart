@@ -39,23 +39,15 @@ class NotificationDashboardBloc
   /// When selected notifications are removed
   FutureOr<void> _onNotificationsSelectedRemoved(
       NotificationRemovedSelectedEvent event,
-      Emitter<NotificationDashboardState> emit) {
-    List allNotifs = List.from(state.notifications);
-
-    allNotifs.removeWhere(
-        (element) => (state.selectedNotifications.contains(element)));
-
-    emit(state.copyWith(null, allNotifs.cast<Notification>(), const []));
+      Emitter<NotificationDashboardState> emit) async {
+    await _repository.removeNotificationCollection(state.selectedNotifications);
+    emit(state.copyWith(null, null, const []));
   }
 
   /// When a notification is created
   Future<void> _onNotificationCreation(NotificationCreatedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    var newNotifications = List<Notification>.from(state.notifications);
-
-    newNotifications.add(const Notification());
-
-    emit(state.copyWith(null, newNotifications, null));
+    _repository.addNotification(Notification());
   }
 
   /// When selected notifications are removed

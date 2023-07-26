@@ -9,4 +9,14 @@ class NotificationsRepository {
 
   /// Returns a [Stream] of [List]s reflecting of stored [Notification]s
   Stream<List<Notification>> getNotifications() => _api.getNotifications();
+
+  Future<void> addNotification(Notification notification) async {
+    await _api.addNotification(notification);
+  }
+
+  /// Removes a
+  Future<void> removeNotificationCollection(
+      Iterable<Notification> notifications) async {
+    await _api.removeNotificationCollection(notifications);
+  }
 }
