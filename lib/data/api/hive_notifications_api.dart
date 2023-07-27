@@ -24,14 +24,15 @@ class HiveNotificationsApi extends NotificationsApi {
 
     notificationBox = await Hive.openBox<Notification>(databaseKey);
 
-    List<List<Notification>> notificationsList =
-        List<List<Notification>>.generate(
-            1, (index) => List.from(notificationBox.values));
+    List<Notification> notificationsList = notificationBox.values.toList();
 
-    Stream<List<Notification>> boxStream =
-        Stream.fromIterable(notificationsList);
+    Iterable<List<Notification>> listOfLists =
+        List.filled(1, notificationsList);
 
-    _notificationsStreamController.addStream(boxStream);
+    Stream<List<Notification>> notificationStream =
+        Stream.fromIterable(listOfLists);
+
+    _notificationsStreamController.addStream(notificationStream);
   }
 
   /// Provides a [Stream] to the list containing all stored notifications.
@@ -42,13 +43,10 @@ class HiveNotificationsApi extends NotificationsApi {
   }
 
   /// Stores a [Notification] in the Hive database.
-  ///
-  /// In orer to utilize auto-increment-keys provided by Hive the [Notification] has to be
-  /// stored first in order to obtain the auto-increment-key, hence the first iteration of adding and deleting.
   @override
   Future<void> addNotification(Notification notification) async {
     await notificationBox.add(notification);
-    // print(_notificationsStreamController.stream.length);
+    _notificationsStreamController.add(notificationBox.values.toList());
   }
 
   /// Removes a collection of [Notification]s in the Hive database.
@@ -61,6 +59,7 @@ class HiveNotificationsApi extends NotificationsApi {
       notificationKeys.add(element.key);
     }
     await notificationBox.deleteAll(notificationKeys);
+    _notificationsStreamController.add(notificationBox.values.toList());
   }
 }
 

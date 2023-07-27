@@ -10,6 +10,9 @@ Implementer testing
 Implementer exception handling.
 
 Problem med streams, sendes ikke nye versjoner av box hvor liste av notifications finnes. Løses med logging?
+Prøv med å manuelt injecte box status i stream først.
+
+Problemer med selectedNotifications muligens pga at alle notifications er lik? Boxevent?
 
 Bruk f{(, {, character etc..} for navigasjon og %.
 Bruk n{j} og n{k} for navigasjon opp og ned.

@@ -111,7 +111,7 @@ class NotificationTitle extends StatefulWidget {
 class _NotificationTitleState extends State<NotificationTitle> {
   @override
   Widget build(BuildContext context) {
-    widget.title ??= "";
+    widget.title ??= "Something important to remember";
 
     return Text(widget.title as String,
         style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),

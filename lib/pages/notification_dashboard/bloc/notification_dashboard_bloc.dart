@@ -40,6 +40,10 @@ class NotificationDashboardBloc
   FutureOr<void> _onNotificationsSelectedRemoved(
       NotificationRemovedSelectedEvent event,
       Emitter<NotificationDashboardState> emit) async {
+    for (final notif in state.selectedNotifications) {
+      print(notif.key);
+    }
+
     await _repository.removeNotificationCollection(state.selectedNotifications);
     emit(state.copyWith(null, null, const []));
   }
@@ -48,6 +52,7 @@ class NotificationDashboardBloc
   Future<void> _onNotificationCreation(NotificationCreatedEvent event,
       Emitter<NotificationDashboardState> emit) async {
     _repository.addNotification(Notification());
+    print(state.notifications.last.key);
   }
 
   /// When selected notifications are removed
@@ -58,5 +63,9 @@ class NotificationDashboardBloc
 
     await emit.forEach(notificationsStream,
         onData: (data) => state.copyWith(null, data, null));
+
+    for (final notif in state.notifications) {
+      print(notif.key);
+    }
   }
 }

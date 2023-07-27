@@ -120,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           onPressed: () => {
-                            print("test"),
                             context
                                 .read<NotificationDashboardBloc>()
                                 .add(const NotificationCreatedEvent())
