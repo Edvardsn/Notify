@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:husk/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
+
+import '../pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 
 class NavBarOld extends StatelessWidget {
   const NavBarOld({super.key});

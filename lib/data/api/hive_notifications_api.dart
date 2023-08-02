@@ -24,15 +24,7 @@ class HiveNotificationsApi extends NotificationsApi {
 
     notificationBox = await Hive.openBox<Notification>(databaseKey);
 
-    List<Notification> notificationsList = notificationBox.values.toList();
-
-    Iterable<List<Notification>> listOfLists =
-        List.filled(1, notificationsList);
-
-    Stream<List<Notification>> notificationStream =
-        Stream.fromIterable(listOfLists);
-
-    _notificationsStreamController.addStream(notificationStream);
+    _notificationsStreamController.add(notificationBox.values.toList());
   }
 
   /// Provides a [Stream] to the list containing all stored notifications.

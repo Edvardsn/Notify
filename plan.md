@@ -1,35 +1,59 @@
-# Plan
 
-betyr at notification_bloc er den med tilgang til stream av notifications som kommer fra API.
-Får notification av notification_state. (state)
+- [Imlementasjoner](#imlementasjoner)
+- [1.1. Logging](#11-logging)
+  - [1.1.1. Trace](#111-trace)
+  - [1.1.2. Debug](#112-debug)
+  - [1.1.3. Info](#113-info)
+- [1.2. Tabs and windows](#12-tabs-and-windows)
+  - [1.2.1. File and folders](#121-file-and-folders)
+- [1.3. Application](#13-application)
 
 <!-- TODO -->
 
-Implementer logging
+Aktiver Vim colors
+Aktiver Vim sneak
+
+Bug kan fikses med å bare gjøre selected notifications mer tydelig. Fungerer i back-end. Er bare snakk om en visuell bug. Utbedre hvordan dette håndteres.
+Sjekke hvilkene som blir selected og hvilke som fjernes. Kan muligens bare gå gjennom alle og unchecke etter removeAll.
+
+- ! Implementer logging
 Implementer testing
 Implementer exception handling.
-
-Problem med streams, sendes ikke nye versjoner av box hvor liste av notifications finnes. Løses med logging?
-Prøv med å manuelt injecte box status i stream først.
-
-Problemer med selectedNotifications muligens pga at alle notifications er lik? Boxevent?
 
 Bruk f{(, {, character etc..} for navigasjon og %.
 Bruk n{j} og n{k} for navigasjon opp og ned.
 
-Implementer StreamController med broadcastStream() som oppdatere lista og added nye liste til stream slik at alle
-subscribers blir oppdatert. Observer pattern.
-
 Expection handling i feature layer, notificaiton tiles komponenter.
 
-- Installer flutter lints package for code style.
-- NotificationInFocus field på dashboard bloc. Trenger å kunne edit en notification. onPressed -> NotificationFocusedEvent etc.
-- Builder pattern på state når copyWith kjøres
-- Bruk emojis (Text scaling factor???)
 
-<!-- ?New -->
+## Imlementasjoner
 
-### Tabs and windows
+* NotificationInFocus field på dashboard bloc. Trenger å kunne edit en notification. onPressed -> NotificationFocusedEvent etc.
+* Builder pattern på state når copyWith kjøres
+* Bruk emojis (Text scaling factor???)
+* Boxes e.l rundt felt på notifications slik at man ser de kan trykkes på. Høyere elevation?
+
+## 1.1. Logging
+
+### 1.1.1. Trace
+
+- User interactons
+- View, buttons pressed etc..
+- Text fields etc..
+
+### 1.1.2. Debug
+
+- Objects specific
+  - Logicical signals
+  - State
+
+### 1.1.3. Info
+
+- Big picture stuff
+- Application started, data fetched successfully etc..
+- Non-specific status of sections
+
+## 1.2. Tabs and windows
 
 - **Change tab** ALT+LEFT/RIGHT (view open previous editor)
 - **Move tab** CTRL+SHIFT+PAGE UP/DOWN
@@ -37,12 +61,12 @@ Expection handling i feature layer, notificaiton tiles komponenter.
 - **New window** CTRL+SHIFT+N
 - **Close window** CTRL+SHIFT+W
 
-### File and folders
+### 1.2.1. File and folders
 
 - **Open file** CTRL+P
 - **New file** CTRL+N
 
-## Application
+## 1.3. Application
 
 ---
 

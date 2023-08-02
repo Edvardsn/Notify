@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:husk/domain/repository/notifications_repository.dart';
-import '../../../data/model/notification.dart';
+import 'package:husk/utils/logger_utils.dart';
+import '../../../../data/model/notification.dart';
 part 'notification_dashboard_event.dart';
 part 'notification_dashboard_state.dart';
 
@@ -22,7 +25,7 @@ class NotificationDashboardBloc
 
   /// When a notification is selected
   FutureOr<void> _onNotificationSelected(NotificationSelectedEvent event,
-      Emitter<NotificationDashboardState> emit) {
+      Emitter<NotificationDashboardState> emit) async {
     /// Extract existing selected notifications
     List<Notification> selectedNotifs = List.from(state.selectedNotifications);
 
@@ -34,16 +37,15 @@ class NotificationDashboardBloc
     var newState = state.copyWith(null, null, selectedNotifs);
 
     emit(newState);
+
+    LoggerUtils.logger.i("Selected notifications:" +
+        state.selectedNotifications.map((e) => e.key).join("-"));
   }
 
   /// When selected notifications are removed
   FutureOr<void> _onNotificationsSelectedRemoved(
       NotificationRemovedSelectedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    for (final notif in state.selectedNotifications) {
-      print(notif.key);
-    }
-
     await _repository.removeNotificationCollection(state.selectedNotifications);
     emit(state.copyWith(null, null, const []));
   }
@@ -51,8 +53,8 @@ class NotificationDashboardBloc
   /// When a notification is created
   Future<void> _onNotificationCreation(NotificationCreatedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    _repository.addNotification(Notification());
-    print(state.notifications.last.key);
+    var id = state.notifications.length + 1;
+    await _repository.addNotification(Notification(title: id.toString()));
   }
 
   /// When selected notifications are removed
@@ -61,11 +63,15 @@ class NotificationDashboardBloc
       Emitter<NotificationDashboardState> emit) async {
     var notificationsStream = _repository.getNotifications();
 
-    await emit.forEach(notificationsStream,
-        onData: (data) => state.copyWith(null, data, null));
+    LoggerUtils.logger.i("Subscription recieved");
 
-    for (final notif in state.notifications) {
-      print(notif.key);
-    }
+    await emit.forEach(notificationsStream, onData: (data) {
+      LoggerUtils.logger
+          .d("Emitted notifications: " + data.map((e) => e.key).join("-"));
+      if (state.notifications.isNotEmpty) {
+        // LoggerUtils.logger.i("Last key: " + data.last.key.toString());
+      }
+      return state.copyWith(null, data, null);
+    });
   }
 }

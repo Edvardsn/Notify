@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 
 class AddNotificationButton extends StatefulWidget {
