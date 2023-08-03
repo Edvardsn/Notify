@@ -29,9 +29,9 @@ class Notification extends HiveObject with EquatableMixin {
   @HiveField(4, defaultValue: null)
   final Duration? preNotificationAlertTime;
 
+  /// Comparison of [Notification]s are determined by the [HiveObject] key.
   @override
-  List<Object?> get props =>
-      [title, timeOfNotification, recurringTimeframe, preNotificationAlertTime];
+  List<Object?> get props => [key];
 
   /// Returns a copy of the [Notification] with the given values updated.
   ///
@@ -52,8 +52,8 @@ class Notification extends HiveObject with EquatableMixin {
   }
 }
 
-/// This class represents an adapter for the [Hive] database used to convert
-/// [Notification]s to binary in order to be stored.
+/// This is a generated class which represents an adapter for the [Hive] database used to convert
+/// [Notification]s to the respective storage format.
 class NotificationAdapter extends TypeAdapter<Notification> {
   @override
   final int typeId = 1;

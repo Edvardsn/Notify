@@ -6,17 +6,17 @@ import 'package:intl/intl.dart';
 import '../pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 
 class NotificationTile extends StatefulWidget {
-  const NotificationTile({super.key, required this.notif});
+  const NotificationTile(
+      {super.key, required this.notif, required this.selected});
 
   final Notification notif;
+  final bool selected;
 
   @override
   State<NotificationTile> createState() => _NotificationTileState();
 }
 
 class _NotificationTileState extends State<NotificationTile> {
-  bool selected = false;
-
   late String timeOfDay =
       DateFormat("Hm").format(widget.notif.timeOfNotification as DateTime);
 
@@ -24,6 +24,7 @@ class _NotificationTileState extends State<NotificationTile> {
   late String dayOfMonth;
 
   late String dateOfNotification = "24/06/2023";
+
   //DateFormat("$dayOfMonth/$timeOfMonth/y")
   //  .format(widget.notif.title as DateTime);
 
@@ -71,24 +72,21 @@ class _NotificationTileState extends State<NotificationTile> {
             children: [
               TimeSlot(
                   timeOfDay: timeOfDay, dateOfNotification: dateOfNotification),
-              Reminder(selected: selected),
+              Reminder(selected: widget.selected),
               const Recurring(),
             ],
           ),
         ),
         trailing: IconButton(
-          icon: selected
+          icon: widget.selected
               ? const Icon(Icons.radio_button_checked_rounded)
               : const Icon(Icons.radio_button_off_rounded),
           color: Colors.grey.shade600,
           iconSize: 24,
           onPressed: () {
-            setState(() {
-              selected = !selected;
-            });
             context.read<NotificationDashboardBloc>().add(
                 NotificationSelectedEvent(
-                    notification: widget.notif, isSelected: selected));
+                    notification: widget.notif, isSelected: !widget.selected));
           },
         ),
       ),

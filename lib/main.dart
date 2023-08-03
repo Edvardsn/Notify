@@ -96,7 +96,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       scrollDirection: Axis.vertical,
                       children: [
                         for (final notification in state.notifications)
-                          NotificationTile(notif: notification)
+                          NotificationTile(
+                            notif: notification,
+                            selected: state.selectedNotifications
+                                .contains(notification),
+                          )
                       ],
                     );
                   }
