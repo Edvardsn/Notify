@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'dart:async';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:husk/domain/repository/notifications_repository.dart';
@@ -38,7 +39,7 @@ class NotificationDashboardBloc
 
     emit(newState);
 
-    LoggerUtils.logger.i("Selected notifications:" +
+    LoggerUtils.logger.d("Selected notifications:" +
         state.selectedNotifications.map((e) => e.key).join("-"));
   }
 
@@ -54,13 +55,16 @@ class NotificationDashboardBloc
   Future<void> _onNotificationCreation(NotificationCreatedEvent event,
       Emitter<NotificationDashboardState> emit) async {
     var id = state.notifications.length + 1;
-    await _repository.addNotification(Notification(title: id.toString()));
+    await _repository.addNotification(Notification(
+        title: id.toString() + " Things to remeber to do something something"));
   }
 
   /// When selected notifications are removed
   Future<void> _onNotificationsSubscription(
       NotificationsSubscriptionEvent event,
       Emitter<NotificationDashboardState> emit) async {
+    emit(state.copyWith(NotificationDashboardStatus.loading, null, null));
+
     var notificationsStream = _repository.getNotifications();
 
     LoggerUtils.logger.i("Subscription recieved");
@@ -68,10 +72,7 @@ class NotificationDashboardBloc
     await emit.forEach(notificationsStream, onData: (data) {
       LoggerUtils.logger
           .d("Emitted notifications: " + data.map((e) => e.key).join("-"));
-      if (state.notifications.isNotEmpty) {
-        // LoggerUtils.logger.i("Last key: " + data.last.key.toString());
-      }
-      return state.copyWith(null, data, null);
+      return state.copyWith(NotificationDashboardStatus.loading, data, null);
     });
   }
 }

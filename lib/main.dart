@@ -1,15 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:husk/data/api/hive_notifications_api.dart';
 import 'package:husk/domain/repository/notifications_repository.dart';
-import 'package:husk/data/model/notification.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:device_preview/device_preview.dart';
 import 'package:husk/utils/logger_utils.dart';
 import 'package:husk/view/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:husk/view/themes/blue_theme.dart';
 import 'package:husk/view/widgets/navbar.dart';
-import 'package:husk/view/widgets/notification_tile.dart';
+
+import 'view/widgets/notification/notification_tile.dart';
 
 void main() async {
   NotificationsRepository notificationsRepository =
@@ -58,11 +59,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    var test = Notification(
-      title: "Something that despereatley needs to be done",
-      timeOfNotification: DateTime.now(),
-    );
-
     return BlocProvider(
       create: (context) => NotificationDashboardBloc(
           repository: context.read<NotificationsRepository>())
@@ -79,33 +75,51 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const Spacer(flex: 3),
-            Expanded(
-              flex: 65,
-              child: BlocBuilder<NotificationDashboardBloc,
-                  NotificationDashboardState>(
-                builder: (context, state) {
-                  if (state.status == NotificationDashboardStatus.loading) {
-                    return const CircularProgressIndicator(
-                      strokeWidth: 10,
-                    );
-                  } else {
-                    return ListView(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                          decelerationRate: ScrollDecelerationRate.normal),
-                      scrollDirection: Axis.vertical,
+            BlocBuilder<NotificationDashboardBloc, NotificationDashboardState>(
+              builder: (context, state) {
+                if (state.status == NotificationDashboardStatus.loading) {
+                  return const Expanded(
+                    flex: 65,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (final notification in state.notifications)
-                          NotificationTile(
-                            notif: notification,
-                            selected: state.selectedNotifications
-                                .contains(notification),
-                          )
+                        CircularProgressIndicator(
+                          strokeWidth: 3,
+                        ),
                       ],
-                    );
-                  }
-                },
-              ),
+                    ),
+                  );
+                } else {
+                  return Expanded(
+                    flex: 65,
+                    child: AnimationLimiter(
+                      child: ListView.builder(
+                        itemCount: state.notifications.length,
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                child: NotificationTile(
+                                  notif: state.notifications[index],
+                                  selected: state.selectedNotifications
+                                      .contains(state.notifications[index]),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(
+                            decelerationRate: ScrollDecelerationRate.normal),
+                        scrollDirection: Axis.vertical,
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
             Flexible(
               fit: FlexFit.tight,
@@ -117,34 +131,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: BlocBuilder<NotificationDashboardBloc,
                       NotificationDashboardState>(
                     builder: (context, state) {
-                      if (state.selectedNotifications.isEmpty) {
-                        return FloatingActionButton(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(28),
-                            ),
-                          ),
-                          onPressed: () => {
-                            context
-                                .read<NotificationDashboardBloc>()
-                                .add(const NotificationCreatedEvent())
-                          },
-                          backgroundColor: Colors.green,
-                          child: const Icon(Icons.add),
-                        );
+                      if (state.status == NotificationDashboardStatus.loading) {
+                        return const SizedBox(height: 0, width: 0);
+                      } else if (state.selectedNotifications.isEmpty) {
+                        return const AddNotificationButton();
                       } else {
-                        return FloatingActionButton(
-                            onPressed: () => {
-                                  context.read<NotificationDashboardBloc>().add(
-                                      const NotificationRemovedSelectedEvent())
-                                },
-                            backgroundColor: Colors.red,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(28),
-                              ),
-                            ),
-                            child: const Icon(FontAwesomeIcons.trashCan));
+                        return const RemoveNotificationButton();
                       }
                     },
                   ),
@@ -156,5 +148,52 @@ class _MyHomePageState extends State<MyHomePage> {
         bottomNavigationBar: const NavBar(),
       ),
     );
+  }
+}
+
+class AddNotificationButton extends StatelessWidget {
+  const AddNotificationButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(28),
+        ),
+      ),
+      onPressed: () => {
+        context
+            .read<NotificationDashboardBloc>()
+            .add(const NotificationCreatedEvent())
+      },
+      backgroundColor: Colors.green,
+      child: const Icon(Icons.add),
+    );
+  }
+}
+
+class RemoveNotificationButton extends StatelessWidget {
+  const RemoveNotificationButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+        onPressed: () => {
+              context
+                  .read<NotificationDashboardBloc>()
+                  .add(const NotificationRemovedSelectedEvent())
+            },
+        backgroundColor: Colors.red,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(28),
+          ),
+        ),
+        child: const Icon(FontAwesomeIcons.trashCan));
   }
 }
