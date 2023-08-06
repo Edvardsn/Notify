@@ -72,7 +72,7 @@ class NotificationDashboardBloc
     await emit.forEach(notificationsStream, onData: (data) {
       LoggerUtils.logger
           .d("Emitted notifications: " + data.map((e) => e.key).join("-"));
-      return state.copyWith(NotificationDashboardStatus.loading, data, null);
+      return state.copyWith(NotificationDashboardStatus.active, data, null);
     });
   }
 }
