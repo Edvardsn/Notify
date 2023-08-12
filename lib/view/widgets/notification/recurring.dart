@@ -12,20 +12,20 @@ class Recurring extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(5))),
       elevation: 2,
       child: SizedBox(
-        height: 25,
-        width: 40,
+        height: 30,
+        width: 45,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Flexible(
+              const Flexible(
                 child: Text(
                   "30d",
                   style: TextStyle(
-                      color: Theme.of(context).textTheme.labelMedium?.color,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 8),
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 9),
                 ),
               ),
               Flexible(

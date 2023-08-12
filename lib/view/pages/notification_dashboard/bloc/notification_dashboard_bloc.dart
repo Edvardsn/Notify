@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'dart:async';
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:husk/domain/repository/notifications_repository.dart';
@@ -47,8 +46,13 @@ class NotificationDashboardBloc
   FutureOr<void> _onNotificationsSelectedRemoved(
       NotificationRemovedSelectedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    await _repository.removeNotificationCollection(state.selectedNotifications);
-    emit(state.copyWith(null, null, const []));
+    LoggerUtils.logger.d("Removing: " + state.selectedNotifications.join("-"));
+
+    var selected = state.selectedNotifications;
+
+    emit(state.copyWith(NotificationDashboardStatus.processing, null, []));
+
+    await _repository.removeNotificationCollection(selected);
   }
 
   /// When a notification is created
@@ -64,14 +68,13 @@ class NotificationDashboardBloc
       NotificationsSubscriptionEvent event,
       Emitter<NotificationDashboardState> emit) async {
     emit(state.copyWith(NotificationDashboardStatus.loading, null, null));
+    LoggerUtils.logger.i("Status: Loading");
 
     var notificationsStream = _repository.getNotifications();
 
-    LoggerUtils.logger.i("Subscription recieved");
-
     await emit.forEach(notificationsStream, onData: (data) {
       LoggerUtils.logger
-          .d("Emitted notifications: " + data.map((e) => e.key).join("-"));
+          .d("(A) Emitted notifications: " + data.map((e) => e.key).join("-"));
       return state.copyWith(NotificationDashboardStatus.active, data, null);
     });
   }

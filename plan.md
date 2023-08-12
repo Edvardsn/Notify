@@ -10,26 +10,30 @@
 
 <!-- TODO -->
 
-Aktiver Vim colors
-Aktiver Vim sneak
+Refactor til å bruke mer polymorphisme, abstrahere mer eks Iterable, E(Element).
 
-Bug kan fikses med å bare gjøre selected notifications mer tydelig. Fungerer i back-end. Er bare snakk om en visuell bug. Utbedre hvordan dette håndteres.
-Sjekke hvilkene som blir selected og hvilke som fjernes. Kan muligens bare gå gjennom alle og unchecke etter removeAll.
+!!! Exception handling for keys til notifications. RemoveItems baseres på at ingen 
+notifications kan lages med null key.
 
-- ! Implementer logging
+Implementer logging
 Implementer testing
 Implementer exception handling.
+
+
+* OnChange i textfield. eller onchange i focus? på komponenten med FocusChangedEvent 
+* Sammenlign samme key med den i notifications og gjør endringa hvis gyldig.
+
+
+
 
 Bruk f{(, {, character etc..} for navigasjon og %.
 Bruk n{j} og n{k} for navigasjon opp og ned.
 
 Expection handling i feature layer, notificaiton tiles komponenter.
-
-
 ## Imlementasjoner
 
 * NotificationInFocus field på dashboard bloc. Trenger å kunne edit en notification. onPressed -> NotificationFocusedEvent etc.
-* Builder pattern på state når copyWith kjøres
+* Builder pattern på state når copyWith kjøres, Med Function? som i todo eksempel.
 * Bruk emojis (Text scaling factor???)
 * Boxes e.l rundt felt på notifications slik at man ser de kan trykkes på. Høyere elevation?
 

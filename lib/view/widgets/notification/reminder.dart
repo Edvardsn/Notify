@@ -11,32 +11,28 @@ class Reminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: const RoundedRectangleBorder(
+    return const Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5))),
       child: SizedBox(
-        height: 25,
+        height: 30,
         width: 40,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+          padding: EdgeInsets.all(2),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Flexible(
                 child: Text(
                   "1h",
-                  style: selected
-                      ? TextStyle(
-                          color: Theme.of(context).textTheme.labelSmall?.color,
-                          fontSize: 10,
-                        )
-                      : TextStyle(
-                          color: Theme.of(context).textTheme.labelSmall?.color,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 8),
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
-              const Flexible(
+              Flexible(
                 child: Icon(
                   FontAwesomeIcons.solidBell,
                   color: Color(0xFFB36823),

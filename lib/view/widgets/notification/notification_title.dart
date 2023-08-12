@@ -17,9 +17,25 @@ class _NotificationTitleState extends State<NotificationTitle> {
   Widget build(BuildContext context) {
     widget.title ??= "Something important to remember";
 
-    return Text(widget.title as String,
-        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis);
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            style: const TextStyle(
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+                fontSize: 13),
+            decoration:
+                const InputDecoration(border: InputBorder.none, isDense: true),
+            controller: TextEditingController.fromValue(
+              const TextEditingValue(
+                  text:
+                      "testing testing, 5 something has to remember blablablabal lalalalal jadadadada"),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

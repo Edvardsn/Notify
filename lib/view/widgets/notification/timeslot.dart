@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TimeSlot extends StatelessWidget {
   const TimeSlot({
@@ -12,41 +13,47 @@ class TimeSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5))),
-      child: Padding(
-        padding: const EdgeInsets.all(2),
-        child: SizedBox(
-          height: 25,
-          width: 40,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  "16:00",
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.labelMedium?.color,
-                      fontSize: 8,
-                      fontWeight: FontWeight.normal),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: true,
+    return GestureDetector(
+      onTap: () {
+        showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+            initialEntryMode: TimePickerEntryMode.inputOnly);
+      },
+      child: const Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        child: Padding(
+          padding: EdgeInsets.all(2),
+          child: SizedBox(
+            height: 25,
+            width: 50,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  child: Text(
+                    "16:00",
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: true,
+                  ),
                 ),
-              ),
-              Flexible(
-                child: Text(
-                  dateOfNotification,
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.labelSmall?.color,
-                      fontSize: 7,
-                      fontWeight: FontWeight.w100),
-                ),
-              )
-            ],
+                Flexible(
+                  child: Icon(
+                    FontAwesomeIcons.solidBell,
+                    color: Colors.orange,
+                    size: 12,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

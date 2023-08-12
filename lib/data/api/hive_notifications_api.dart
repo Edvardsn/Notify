@@ -51,7 +51,10 @@ class HiveNotificationsApi extends NotificationsApi {
       notificationKeys.add(element.key);
     }
     await notificationBox.deleteAll(notificationKeys);
-    _notificationsStreamController.add(notificationBox.values.toList());
+
+    var newValues = notificationBox.values.toList();
+
+    _notificationsStreamController.add(newValues);
   }
 }
 
