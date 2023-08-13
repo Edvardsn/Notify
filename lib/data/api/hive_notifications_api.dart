@@ -27,7 +27,7 @@ class HiveNotificationsApi extends NotificationsApi {
     _notificationsStreamController.add(notificationBox.values.toList());
   }
 
-  /// Provides a [Stream] to the list containing all stored notifications.
+  /// Provides a [Stream] to the list containing all stored [Notification]s.
   @override
   Stream<List<Notification>> getNotifications() {
     return _notificationsStreamController.stream.asBroadcastStream()
@@ -55,6 +55,13 @@ class HiveNotificationsApi extends NotificationsApi {
     var newValues = notificationBox.values.toList();
 
     _notificationsStreamController.add(newValues);
+  }
+
+  /// Saves the edited [Notification] to the [Hive] database.
+  @override
+  Future<void> editNotification(Notification editedNotification) async {
+    editedNotification.save();
+    _notificationsStreamController.add(notificationBox.values.toList());
   }
 }
 

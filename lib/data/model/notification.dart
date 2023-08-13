@@ -34,26 +34,26 @@ class Notification extends HiveObject with EquatableMixin {
   List<Object?> get props => [key];
 
   /// Returns a copy of the [Notification] with the given values updated.
-  ///
-  /// {@macro notification_item}
   Notification copyWith(
-      {int? id,
-      String? title,
+      {String? title,
       DateTime? timeOfNotification,
       Duration? recurringTimeframe,
       Duration? preNotificationAlertTime}) {
-    return Notification(
+    var newNotif = Notification(
       title: title ?? this.title,
       timeOfNotification: timeOfNotification ?? this.timeOfNotification,
       recurringTimeframe: recurringTimeframe ?? this.recurringTimeframe,
       preNotificationAlertTime:
           preNotificationAlertTime ?? this.preNotificationAlertTime,
     );
+    newNotif.key == key;
+
+    return newNotif;
   }
 }
 
-/// This is a generated class which represents an adapter for the [Hive] database used to convert
-/// [Notification]s to the respective storage format.
+/// This is a generated class which serves as an adapter for the [Hive] database used to convert
+/// [Notification]s to its respective storage format.
 class NotificationAdapter extends TypeAdapter<Notification> {
   @override
   final int typeId = 1;

@@ -5,13 +5,13 @@ import 'package:husk/view/widgets/notification/dateslot.dart';
 import '../../pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'notification_title.dart';
 import 'recurring.dart';
-import 'reminder.dart';
 import 'timeslot.dart';
 
 class NotificationTile extends StatefulWidget {
   NotificationTile({super.key, required this.notif, required this.selected});
 
   final Notification notif;
+  late Notification editedNotification;
   bool selected;
 
   @override
@@ -21,6 +21,13 @@ class NotificationTile extends StatefulWidget {
 class _NotificationTileState extends State<NotificationTile> {
   late String timeOfDay = "16:00";
   late String dateOfNotification = "24/06/2023";
+
+  /// Registers changes to shared state.
+  void registerNotificationChange(Notification notification) {
+    context.read<NotificationDashboardBloc>().add(
+          NotificationEditedEvent(notification, widget.notif),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +44,35 @@ class _NotificationTileState extends State<NotificationTile> {
           child: Wrap(
             direction: Axis.horizontal,
             children: [
-              TimeSlot(
-                  timeOfDay: timeOfDay, dateOfNotification: dateOfNotification),
+              GestureDetector(
+                onTap: () async {
+                  var timeSelected = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+
+                  DateTime? newTime;
+
+                  if (timeSelected != null) {
+                    if (widget.notif.timeOfNotification != null) {
+                      newTime = widget.notif.timeOfNotification?.copyWith(
+                          hour: timeSelected.hour, minute: timeSelected.minute);
+                    } else {
+                      newTime = DateTime.now().copyWith(
+                          hour: timeSelected.hour, minute: timeSelected.minute);
+                    }
+
+                    if (newTime != null) {
+                      var editedNotification =
+                          widget.notif.copyWith(timeOfNotification: newTime);
+                      registerNotificationChange(editedNotification);
+                    }
+                  }
+                },
+                child: TimeSlot(
+                    timeOfDay: timeOfDay,
+                    dateOfNotification: dateOfNotification),
+              ),
               DateSlot(
                   timeOfDay: timeOfDay, dateOfNotification: dateOfNotification),
               const Recurring()
@@ -64,4 +98,7 @@ class _NotificationTileState extends State<NotificationTile> {
       ),
     );
   }
+
+  NotificationDashboardBloc registerEvent(BuildContext context) =>
+      context.read<NotificationDashboardBloc>();
 }

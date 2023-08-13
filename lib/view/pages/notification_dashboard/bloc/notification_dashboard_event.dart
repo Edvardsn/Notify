@@ -27,6 +27,18 @@ final class NotificationCreatedEvent extends NotificationDashboardEvent {
   const NotificationCreatedEvent();
 }
 
+/// An event which signals that a notification has been edited
+///! Refactor t bruk av Change e.l
+final class NotificationEditedEvent extends NotificationDashboardEvent {
+  const NotificationEditedEvent(
+    this.proposedChange,
+    this.originalNotification,
+  );
+
+  final Notification proposedChange;
+  final Notification originalNotification;
+}
+
 /// An event which signals that an object has subscribed on notifications data.
 final class NotificationsSubscriptionEvent extends NotificationDashboardEvent {
   const NotificationsSubscriptionEvent();

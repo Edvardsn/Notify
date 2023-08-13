@@ -75,35 +75,32 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const Spacer(flex: 3),
-            Stack(children: [
-              BlocBuilder<NotificationDashboardBloc,
-                  NotificationDashboardState>(
-                buildWhen: (previous, current) {
-                  return previous.status != current.status;
-                },
-                builder: (context, state) {
-                  if (state.status == NotificationDashboardStatus.loading) {
-                    return const Expanded(
-                      flex: 65,
-                      child: LoadingIndicator(),
-                    );
-                  } else if (state.status ==
-                      NotificationDashboardStatus.inactive) {
-                    return const SizedBox(
-                      height: 0,
-                      width: 0,
-                    );
-                  } else {
-                    return Expanded(
-                      flex: 76,
-                      child: NotificationsList(
-                        initialList: state.notifications,
-                      ),
-                    );
-                  }
-                },
-              ),
-            ]),
+            BlocBuilder<NotificationDashboardBloc, NotificationDashboardState>(
+              buildWhen: (previous, current) {
+                return previous.status != current.status;
+              },
+              builder: (context, state) {
+                if (state.status == NotificationDashboardStatus.loading) {
+                  return const Expanded(
+                    flex: 65,
+                    child: LoadingIndicator(),
+                  );
+                } else if (state.status ==
+                    NotificationDashboardStatus.inactive) {
+                  return const SizedBox(
+                    height: 0,
+                    width: 0,
+                  );
+                } else {
+                  return Expanded(
+                    flex: 77,
+                    child: NotificationsList(
+                      initialList: state.notifications,
+                    ),
+                  );
+                }
+              },
+            ),
             Flexible(
               fit: FlexFit.tight,
               flex: 15,

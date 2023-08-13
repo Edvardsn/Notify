@@ -13,47 +13,39 @@ class TimeSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showTimePicker(
-            context: context,
-            initialTime: TimeOfDay.now(),
-            initialEntryMode: TimePickerEntryMode.inputOnly);
-      },
-      child: const Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5))),
-        child: Padding(
-          padding: EdgeInsets.all(2),
-          child: SizedBox(
-            height: 25,
-            width: 50,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Text(
-                    "16:00",
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: true,
-                  ),
+    return const Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+      child: Padding(
+        padding: EdgeInsets.all(2),
+        child: SizedBox(
+          height: 25,
+          width: 50,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: Text(
+                  "16:00",
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: true,
                 ),
-                Flexible(
-                  child: Icon(
-                    FontAwesomeIcons.solidBell,
-                    color: Colors.orange,
-                    size: 12,
-                  ),
-                )
-              ],
-            ),
+              ),
+              Flexible(
+                child: Icon(
+                  FontAwesomeIcons.solidBell,
+                  color: Colors.orange,
+                  size: 12,
+                ),
+              )
+            ],
           ),
         ),
       ),
