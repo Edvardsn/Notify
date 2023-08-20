@@ -21,7 +21,7 @@ class Recurring extends StatelessWidget {
             children: [
               const Flexible(
                 child: Text(
-                  "30d",
+                  "-",
                   style: TextStyle(
                       color: Colors.black54,
                       fontWeight: FontWeight.w700,

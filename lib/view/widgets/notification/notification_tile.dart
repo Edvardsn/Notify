@@ -19,9 +19,6 @@ class NotificationTile extends StatefulWidget {
 }
 
 class _NotificationTileState extends State<NotificationTile> {
-  late String timeOfDay = "16:00";
-  late String dateOfNotification = "24/06/2023";
-
   /// Registers changes to shared state.
   void registerNotificationChange(Notification notification) {
     context.read<NotificationDashboardBloc>().add(
@@ -37,47 +34,83 @@ class _NotificationTileState extends State<NotificationTile> {
       child: ListTile(
         visualDensity: VisualDensity.compact,
         contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-        title: NotificationTitle(title: widget.notif.title),
+        title: NotificationTitle(notification: widget.notif),
         titleAlignment: ListTileTitleAlignment.center,
-        subtitle: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Wrap(
-            direction: Axis.horizontal,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  var timeSelected = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  );
+        subtitle: Wrap(
+          direction: Axis.horizontal,
+          children: [
+            GestureDetector(
+              onTap: () async {
+                var timeSelected = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
 
-                  DateTime? newTime;
+                DateTime? newTime;
 
-                  if (timeSelected != null) {
-                    if (widget.notif.timeOfNotification != null) {
-                      newTime = widget.notif.timeOfNotification?.copyWith(
-                          hour: timeSelected.hour, minute: timeSelected.minute);
-                    } else {
-                      newTime = DateTime.now().copyWith(
-                          hour: timeSelected.hour, minute: timeSelected.minute);
-                    }
-
-                    if (newTime != null) {
-                      var editedNotification =
-                          widget.notif.copyWith(timeOfNotification: newTime);
-                      registerNotificationChange(editedNotification);
-                    }
+                if (timeSelected != null) {
+                  if (widget.notif.timeOfNotification != null) {
+                    newTime = widget.notif.timeOfNotification?.copyWith(
+                        hour: timeSelected.hour, minute: timeSelected.minute);
+                  } else {
+                    newTime = DateTime.now().copyWith(
+                        hour: timeSelected.hour, minute: timeSelected.minute);
                   }
-                },
-                child: TimeSlot(
-                    timeOfDay: timeOfDay,
-                    dateOfNotification: dateOfNotification),
+
+                  if (newTime != null) {
+                    var editedNotification =
+                        widget.notif.copyWith(timeOfNotification: newTime);
+
+                    registerNotificationChange(editedNotification);
+
+                    setState(() {
+                      widget.notif.timeOfNotification = newTime;
+                    });
+                  }
+                }
+              },
+              child: TimeSlot(
+                timeOfDay: widget.notif.timeOfNotification,
               ),
-              DateSlot(
-                  timeOfDay: timeOfDay, dateOfNotification: dateOfNotification),
-              const Recurring()
-            ],
-          ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                var dateSelected = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.utc(2050));
+
+                DateTime? newTime;
+
+                if (dateSelected != null) {
+                  if (widget.notif.timeOfNotification != null) {
+                    newTime = widget.notif.timeOfNotification?.copyWith(
+                        day: dateSelected.day,
+                        month: dateSelected.month,
+                        year: dateSelected.year);
+                  } else {
+                    newTime = DateTime.now().copyWith(
+                        day: dateSelected.day,
+                        month: dateSelected.month,
+                        year: dateSelected.year);
+                  }
+
+                  if (newTime != null) {
+                    var editedNotification =
+                        widget.notif.copyWith(timeOfNotification: newTime);
+
+                    registerNotificationChange(editedNotification);
+                    setState(() {
+                      widget.notif.timeOfNotification = newTime;
+                    });
+                  }
+                }
+              },
+              child:
+                  DateSlot(timeOfNotification: widget.notif.timeOfNotification),
+            ),
+          ],
         ),
         trailing: IconButton(
           icon: widget.selected
@@ -98,7 +131,4 @@ class _NotificationTileState extends State<NotificationTile> {
       ),
     );
   }
-
-  NotificationDashboardBloc registerEvent(BuildContext context) =>
-      context.read<NotificationDashboardBloc>();
 }

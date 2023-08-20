@@ -13,5 +13,6 @@ abstract class NotificationsApi {
       Iterable<Notification> notification);
 
   /// Saves a change to a [Notification].
-  Future<void> editNotification(Notification notification);
+  Future<void> editNotification(
+      Notification proposedChange, Notification originalNotification);
 }

@@ -5,20 +5,21 @@ class TimeSlot extends StatelessWidget {
   const TimeSlot({
     super.key,
     required this.timeOfDay,
-    required this.dateOfNotification,
   });
 
-  final String timeOfDay;
-  final String dateOfNotification;
+  final DateTime? timeOfDay;
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
+    return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+      ),
       child: Padding(
-        padding: EdgeInsets.all(2),
+        padding: const EdgeInsets.all(2),
         child: SizedBox(
           height: 25,
           width: 50,
@@ -28,8 +29,12 @@ class TimeSlot extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  "16:00",
-                  style: TextStyle(
+                  timeOfDay != null && timeOfDay!.minute >= 10
+                      ? "${timeOfDay!.hour}:${timeOfDay!.minute}"
+                      : (timeOfDay != null)
+                          ? "${timeOfDay!.hour}:0${timeOfDay!.minute}"
+                          : "-",
+                  style: const TextStyle(
                       color: Colors.black54,
                       fontSize: 9,
                       fontWeight: FontWeight.w700),
@@ -38,7 +43,7 @@ class TimeSlot extends StatelessWidget {
                   softWrap: true,
                 ),
               ),
-              Flexible(
+              const Flexible(
                 child: Icon(
                   FontAwesomeIcons.solidBell,
                   color: Colors.orange,

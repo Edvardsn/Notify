@@ -99,6 +99,7 @@ class _NotificationsListState extends State<NotificationsList> {
       ],
       child: AnimationLimiter(
         child: FadingEdgeScrollView.fromAnimatedList(
+          gradientFractionOnStart: 0,
           child: AnimatedList(
             key: _animatedListKey,
             controller: ScrollController(),

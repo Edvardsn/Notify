@@ -7,27 +7,28 @@ import 'package:hive/hive.dart';
 /// [Notification]´s are immutable but can be copied using [copyWith].
 @HiveType(typeId: 1, adapterName: "NotificationAdapter")
 class Notification extends HiveObject with EquatableMixin {
-  Notification(
-      {this.title,
-      this.timeOfNotification,
-      this.recurringTimeframe,
-      this.preNotificationAlertTime});
+  Notification({
+    this.title,
+    this.timeOfNotification,
+    this.recurringTimeframe,
+    this.preNotificationAlertTime,
+  });
 
   /// The title of the notificaiton
   @HiveField(1, defaultValue: "")
-  final String? title;
+  String? title;
 
   /// The time and date of the notification
   @HiveField(2, defaultValue: null)
-  final DateTime? timeOfNotification;
+  DateTime? timeOfNotification;
 
   /// A duration representing the interval the notification should be repeated.
   @HiveField(3, defaultValue: null)
-  final Duration? recurringTimeframe;
+  Duration? recurringTimeframe;
 
   /// A duration representing a given amount of time to be alerted before the notification.
   @HiveField(4, defaultValue: null)
-  final Duration? preNotificationAlertTime;
+  Duration? preNotificationAlertTime;
 
   /// Comparison of [Notification]s are determined by the [HiveObject] key.
   @override
@@ -39,16 +40,13 @@ class Notification extends HiveObject with EquatableMixin {
       DateTime? timeOfNotification,
       Duration? recurringTimeframe,
       Duration? preNotificationAlertTime}) {
-    var newNotif = Notification(
+    return Notification(
       title: title ?? this.title,
       timeOfNotification: timeOfNotification ?? this.timeOfNotification,
       recurringTimeframe: recurringTimeframe ?? this.recurringTimeframe,
       preNotificationAlertTime:
           preNotificationAlertTime ?? this.preNotificationAlertTime,
     );
-    newNotif.key == key;
-
-    return newNotif;
   }
 }
 
