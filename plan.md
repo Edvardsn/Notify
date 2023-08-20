@@ -14,7 +14,7 @@ Aktiver Vim colors
 Aktiver Vim sneak
 
 Bug kan fikses med å bare gjøre selected notifications mer tydelig. Fungerer i back-end. Er bare snakk om en visuell bug. Utbedre hvordan dette håndteres.
-Sjekke hvilkene som blir selected og hvilke som fjernes. Kan muligens bare gå gjennom alle og unchecke etter removeAll.
+Sjekke hvilkene som blir selected og hvilke som fjernes. Kan muligens bare gå gjennom alle og unchecke etter removeAll.2
 
 - ! Implementer logging
 Implementer testing

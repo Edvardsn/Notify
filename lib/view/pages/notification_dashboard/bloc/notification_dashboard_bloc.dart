@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'dart:async';
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:husk/domain/repository/notifications_repository.dart';
@@ -72,7 +71,7 @@ class NotificationDashboardBloc
     await emit.forEach(notificationsStream, onData: (data) {
       LoggerUtils.logger
           .d("Emitted notifications: " + data.map((e) => e.key).join("-"));
-      return state.copyWith(NotificationDashboardStatus.loading, data, null);
+      return state.copyWith(NotificationDashboardStatus.active, data, null);
     });
   }
 }
