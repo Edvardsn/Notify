@@ -21,6 +21,23 @@ class NotificationDashboardBloc
     on<NotificationRemovedSelectedEvent>(_onNotificationsSelectedRemoved);
     on<NotificationsSubscriptionEvent>(_onNotificationsSubscription);
     on<NotificationCreatedEvent>(_onNotificationCreation);
+    on<NotificationEditedEvent>(_onNotificationEdited);
+  }
+
+  /// When selected notifications are removed
+  Future<void> _onNotificationsSubscription(
+      NotificationsSubscriptionEvent event,
+      Emitter<NotificationDashboardState> emit) async {
+    emit(state.copyWith(NotificationDashboardStatus.loading, null, null));
+    LoggerUtils.logger.i("Status: Loading");
+
+    var notificationsStream = _repository.getNotifications();
+
+    await emit.forEach(notificationsStream, onData: (data) {
+      LoggerUtils.logger
+          .d("(A) Emitted notifications: " + data.map((e) => e.key).join("-"));
+      return state.copyWith(NotificationDashboardStatus.active, data, null);
+    });
   }
 
   /// When a notification is selected
@@ -46,11 +63,16 @@ class NotificationDashboardBloc
   FutureOr<void> _onNotificationsSelectedRemoved(
       NotificationRemovedSelectedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    await _repository.removeNotificationCollection(state.selectedNotifications);
-    emit(state.copyWith(null, null, const []));
+    LoggerUtils.logger.d("Removing: " + state.selectedNotifications.join("-"));
+
+    var selected = state.selectedNotifications;
+
+    emit(state.copyWith(NotificationDashboardStatus.processing, null, []));
+
+    await _repository.removeNotificationCollection(selected);
   }
 
-  /// When a notification is created
+  /// Requests
   Future<void> _onNotificationCreation(NotificationCreatedEvent event,
       Emitter<NotificationDashboardState> emit) async {
     var id = state.notifications.length + 1;
@@ -58,20 +80,10 @@ class NotificationDashboardBloc
         title: id.toString() + " Things to remeber to do something something"));
   }
 
-  /// When selected notifications are removed
-  Future<void> _onNotificationsSubscription(
-      NotificationsSubscriptionEvent event,
+  /// Requests given change to [Notification] is saved in the repository.
+  Future<void> _onNotificationEdited(NotificationEditedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    emit(state.copyWith(NotificationDashboardStatus.loading, null, null));
-
-    var notificationsStream = _repository.getNotifications();
-
-    LoggerUtils.logger.i("Subscription recieved");
-
-    await emit.forEach(notificationsStream, onData: (data) {
-      LoggerUtils.logger
-          .d("Emitted notifications: " + data.map((e) => e.key).join("-"));
-      return state.copyWith(NotificationDashboardStatus.active, data, null);
-    });
+    _repository.editNotification(
+        event.proposedChange, event.originalNotification);
   }
 }

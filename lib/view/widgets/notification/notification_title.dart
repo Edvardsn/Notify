@@ -1,12 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:husk/view/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
+
+import '../../../data/model/notification.dart';
 
 class NotificationTitle extends StatefulWidget {
   NotificationTitle({
     super.key,
-    required this.title,
+    required this.notification,
   });
 
-  String? title;
+  Notification notification;
 
   @override
   State<NotificationTitle> createState() => _NotificationTitleState();
@@ -15,11 +19,31 @@ class NotificationTitle extends StatefulWidget {
 class _NotificationTitleState extends State<NotificationTitle> {
   @override
   Widget build(BuildContext context) {
-    widget.title ??= "Something important to remember";
-
-    return Text(widget.title as String,
-        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis);
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            style: const TextStyle(
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+                fontSize: 13),
+            decoration:
+                const InputDecoration(border: InputBorder.none, isDense: true),
+            controller: TextEditingController.fromValue(
+              TextEditingValue(text: widget.notification.title ?? "-"),
+            ),
+            keyboardType: TextInputType.multiline,
+            onChanged: (value) {
+              context.read<NotificationDashboardBloc>().add(
+                    NotificationEditedEvent(
+                        widget.notification.copyWith(title: value),
+                        widget.notification),
+                  );
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

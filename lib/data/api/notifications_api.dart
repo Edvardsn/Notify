@@ -1,6 +1,6 @@
 import '../model/notification.dart';
 
-/// An interface containing basic essential methods to manage notifications.
+/// An interface containing the necessary methods to manage [Notification]s.
 abstract class NotificationsApi {
   /// Returns a [Stream] containing a [List] of all [Notification]s registered in the data source.
   Stream<List<Notification>> getNotifications();
@@ -11,4 +11,8 @@ abstract class NotificationsApi {
   /// Removes all [Notification]s present in the given [Iterable].
   Future<void> removeNotificationCollection(
       Iterable<Notification> notification);
+
+  /// Saves a change to a [Notification].
+  Future<void> editNotification(
+      Notification proposedChange, Notification originalNotification);
 }

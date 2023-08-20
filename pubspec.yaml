@@ -50,6 +50,8 @@ dependencies:
   intl: ^0.18.0
   logger: ^2.0.1
   flutter_staggered_animations: ^1.0.0
+  fading_edge_scrollview: ^3.0.0
+  flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:
   flutter_test:
