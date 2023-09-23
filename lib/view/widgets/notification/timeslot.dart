@@ -12,6 +12,11 @@ class TimeSlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: timeOfDay != null
+          ? timeOfDay!.isAfter(DateTime.now())
+              ? Theme.of(context).cardColor
+              : Colors.grey
+          : Theme.of(context).cardColor,
       elevation: 2,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -22,7 +27,7 @@ class TimeSlot extends StatelessWidget {
         padding: const EdgeInsets.all(2),
         child: SizedBox(
           height: 25,
-          width: 50,
+          width: 60,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

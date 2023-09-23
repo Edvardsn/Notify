@@ -12,8 +12,15 @@ import 'view/widgets/buttons/add_notificaton_button.dart';
 import 'view/widgets/buttons/remove_notification_button.dart';
 import 'view/widgets/loading_indicator.dart';
 import 'view/widgets/notifications_list.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationUtils().initNotification();
+  tz.initializeTimeZones();
+  // tz.setLocalLocation();
+
   NotificationsRepository notificationsRepository =
       NotificationsRepository(api: HiveNotificationsApi());
 
@@ -23,11 +30,12 @@ void main() async {
   NotificationUtils().initNotification();
 
   runApp(
-    DevicePreview(
-      builder: (context) => MyApp(
-        notificationsRepository: notificationsRepository,
-      ), // Wrap your app
-    ),
+    // DevicePreview(
+    //   builder: (context) =>
+    MyApp(
+      notificationsRepository: notificationsRepository,
+    ), // Wrap your app
+    // ),
   );
 }
 
@@ -129,7 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-        bottomNavigationBar: const NavBar(),
       ),
     );
   }
