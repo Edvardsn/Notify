@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:hive_flutter/adapters.dart';
 import 'package:husk/data/api/notifications_api.dart';
 import 'package:husk/data/model/notification.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:husk/utils/logger_utils.dart';
 import 'package:husk/utils/notification_utils.dart';
 
