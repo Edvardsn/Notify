@@ -43,14 +43,10 @@ class HiveNotificationsApi extends NotificationsApi {
   Future<void> addNotification(Notification notification) async {
     await _notificationBox.add(notification);
     _notificationsStreamController.add(_notificationBox.values.toList());
-    flutterLocalNotificationsPlugin.show(
-      1,
-      "test",
-      "testing testing",
-      const NotificationDetails(
-        macOS: DarwinNotificationDetails(subtitle: "subtitle"),
-      ),
-    );
+
+    
+
+
   }
 
   /// Removes a collection of [Notification]s in the Hive database.

@@ -4,6 +4,7 @@ import 'package:husk/domain/repository/notifications_repository.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:device_preview/device_preview.dart';
 import 'package:husk/utils/logger_utils.dart';
+import 'package:husk/utils/notification_utils.dart';
 import 'package:husk/view/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:husk/view/themes/blue_theme.dart';
 import 'package:husk/view/widgets/navbar.dart';
@@ -11,19 +12,26 @@ import 'view/widgets/buttons/add_notificaton_button.dart';
 import 'view/widgets/buttons/remove_notification_button.dart';
 import 'view/widgets/loading_indicator.dart';
 import 'view/widgets/notifications_list.dart';
-
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationUtils().initNotification();
+  tz.initializeTimeZones();
+  tz.setLocalLocation()
+
   NotificationsRepository notificationsRepository =
       NotificationsRepository(api: HiveNotificationsApi());
 
   LoggerUtils.logger.i("Application initialized");
 
   runApp(
-    DevicePreview(
-      builder: (context) => MyApp(
-        notificationsRepository: notificationsRepository,
-      ), // Wrap your app
-    ),
+    // DevicePreview(
+    //   builder: (context) =>
+    MyApp(
+      notificationsRepository: notificationsRepository,
+    ), // Wrap your app
+    // ),
   );
 }
 
