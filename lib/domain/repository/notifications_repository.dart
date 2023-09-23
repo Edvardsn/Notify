@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:husk/data/api/notifications_api.dart';
 import 'package:husk/data/model/notification.dart';
 
@@ -5,7 +6,20 @@ class NotificationsRepository {
   /// The API for the data source to extract the necessary data
   final NotificationsApi _api;
 
-  const NotificationsRepository({required NotificationsApi api}) : _api = api;
+  //! Refactor til utils mappe, som egen notifications utility.
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  final DarwinInitializationSettings darwinInitializationSettings =
+      const DarwinInitializationSettings();
+
+  NotificationsRepository({required NotificationsApi api}) : _api = api {
+    flutterLocalNotificationsPlugin.initialize(
+      InitializationSettings(
+          iOS: darwinInitializationSettings,
+          macOS: darwinInitializationSettings),
+    );
+  }
 
   /// Returns a [Stream] of [List]s reflecting of stored [Notification]s
   Stream<List<Notification>> getNotifications() => _api.getNotifications();

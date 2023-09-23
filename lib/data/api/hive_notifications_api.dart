@@ -9,9 +9,6 @@ class HiveNotificationsApi extends NotificationsApi {
   final StreamController _notificationsStreamController =
       StreamController<List<Notification>>();
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
   static const String databaseKey = "notifications";
   late final Box<Notification> _notificationBox;
 
@@ -43,14 +40,12 @@ class HiveNotificationsApi extends NotificationsApi {
   Future<void> addNotification(Notification notification) async {
     await _notificationBox.add(notification);
     _notificationsStreamController.add(_notificationBox.values.toList());
-    flutterLocalNotificationsPlugin.show(
-      1,
-      "test",
-      "testing testing",
-      const NotificationDetails(
-        macOS: DarwinNotificationDetails(subtitle: "subtitle"),
-      ),
-    );
+    // flutterLocalNotificationsPlugin.show(
+    //   1,
+    //   "test",
+    //   "testing testing",
+    //   const NotificationDetails(),
+    // );
   }
 
   /// Removes a collection of [Notification]s in the Hive database.

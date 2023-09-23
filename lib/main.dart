@@ -4,6 +4,7 @@ import 'package:husk/domain/repository/notifications_repository.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:device_preview/device_preview.dart';
 import 'package:husk/utils/logger_utils.dart';
+import 'package:husk/utils/notification_utils.dart';
 import 'package:husk/view/pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'package:husk/view/themes/blue_theme.dart';
 import 'package:husk/view/widgets/navbar.dart';
@@ -17,6 +18,9 @@ void main() async {
       NotificationsRepository(api: HiveNotificationsApi());
 
   LoggerUtils.logger.i("Application initialized");
+
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationUtils().initNotification();
 
   runApp(
     DevicePreview(
