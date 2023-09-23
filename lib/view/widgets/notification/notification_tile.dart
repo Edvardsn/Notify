@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:husk/data/model/notification.dart';
+import 'package:husk/utils/logger_utils.dart';
 import 'package:husk/utils/notification_utils.dart';
 import 'package:husk/view/widgets/notification/dateslot.dart';
+import 'package:husk/view/widgets/notification/recurring.dart';
 import '../../pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'notification_title.dart';
 import 'timeslot.dart';
@@ -29,7 +32,11 @@ class _NotificationTileState extends State<NotificationTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).cardColor,
+      color: widget.notif.timeOfNotification != null
+          ? widget.notif.timeOfNotification!.isAfter(DateTime.now())
+              ? Theme.of(context).cardColor
+              : Colors.grey
+          : Theme.of(context).cardColor,
       margin: const EdgeInsets.fromLTRB(10, 4, 10, 4),
       child: ListTile(
         visualDensity: VisualDensity.compact,
@@ -119,9 +126,6 @@ class _NotificationTileState extends State<NotificationTile> {
           color: Colors.grey.shade600,
           iconSize: 24,
           onPressed: () {
-            NotificationUtils()
-                .showNotification(title: "sample", body: "sample");
-
             setState(() {
               widget.selected = !widget.selected;
             });

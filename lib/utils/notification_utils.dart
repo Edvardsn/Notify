@@ -10,7 +10,7 @@ class NotificationUtils {
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('flutter_logo');
 
-    var initializationSettingsIOS = DarwinInitializationSettings(
+    var initializationSettingsDarwin = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
         requestSoundPermission: true,
@@ -18,7 +18,9 @@ class NotificationUtils {
             (int id, String? title, String? body, String? payload) async {});
 
     var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsDarwin,
+        macOS: initializationSettingsDarwin);
     await notificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {});

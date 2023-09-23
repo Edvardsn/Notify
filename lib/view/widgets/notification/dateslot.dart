@@ -17,6 +17,11 @@ class _DateSlotState extends State<DateSlot> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Card(
+        color: widget.timeOfNotification != null
+            ? widget.timeOfNotification!.isAfter(DateTime.now())
+                ? Theme.of(context).cardColor
+                : Colors.grey
+            : Theme.of(context).cardColor,
         elevation: 2,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(

@@ -3,6 +3,8 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:husk/data/api/notifications_api.dart';
 import 'package:husk/data/model/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:husk/utils/logger_utils.dart';
+import 'package:husk/utils/notification_utils.dart';
 
 /// An API to communicate with a Hive database for storage of notifications
 class HiveNotificationsApi extends NotificationsApi {
@@ -28,6 +30,13 @@ class HiveNotificationsApi extends NotificationsApi {
 
     _notificationBox = await Hive.openBox<Notification>(databaseKey);
 
+    for (var element in _notificationBox.values) {
+      if (element.timeOfNotification != null &&
+          element.timeOfNotification!.isBefore(DateTime.now())) {
+        await _notificationBox.delete(element.key);
+      }
+    }
+
     _notificationsStreamController.add(_notificationBox.values.toList());
   }
 
@@ -43,10 +52,6 @@ class HiveNotificationsApi extends NotificationsApi {
   Future<void> addNotification(Notification notification) async {
     await _notificationBox.add(notification);
     _notificationsStreamController.add(_notificationBox.values.toList());
-
-    
-
-
   }
 
   /// Removes a collection of [Notification]s in the Hive database.
@@ -57,7 +62,10 @@ class HiveNotificationsApi extends NotificationsApi {
 
     for (var element in notifications) {
       notificationKeys.add(element.key);
+
+      NotificationUtils().notificationsPlugin.cancel(element.key);
     }
+
     await _notificationBox.deleteAll(notificationKeys);
 
     var newValues = _notificationBox.values.toList();
@@ -69,6 +77,7 @@ class HiveNotificationsApi extends NotificationsApi {
   @override
   Future<void> editNotification(
       Notification proposedChange, Notification originalNotification) async {
+    // Update notification object
     originalNotification.title = proposedChange.title;
     originalNotification.timeOfNotification = proposedChange.timeOfNotification;
     originalNotification.preNotificationAlertTime =
@@ -76,6 +85,25 @@ class HiveNotificationsApi extends NotificationsApi {
     originalNotification.recurringTimeframe = proposedChange.recurringTimeframe;
 
     originalNotification.save();
+
+    if (originalNotification.timeOfNotification != null &&
+        originalNotification.timeOfNotification!.isAfter(DateTime.now())) {
+      // Remove old pending local notificaion
+      await NotificationUtils()
+          .notificationsPlugin
+          .cancel(originalNotification.key);
+
+      LoggerUtils.logger.d(
+          "Scheduling Notification at: ${originalNotification.timeOfNotification}");
+
+      // Create new pending local notificaton with updated timeframe
+      NotificationUtils().scheduleNotification(
+          id: originalNotification.key,
+          body: originalNotification.title,
+          title: 'Notify',
+          scheduledNotificationDateTime:
+              originalNotification.timeOfNotification as DateTime);
+    }
 
     _notificationsStreamController.add(_notificationBox.values.toList());
   }
