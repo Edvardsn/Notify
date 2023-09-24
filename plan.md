@@ -10,6 +10,10 @@
 
 <!-- TODO -->
 
+* Implementer notifications plugin i repository som skal kodes slik at kan trekkes ut i utils. 
+  Lag initialization sånn som i eksempel og test med en show().
+
+
 Endre slik at fields ikke er final, de skal kunne endres. Key derimot er noe som ikke skal redefinires.
 
 !!! Exception handling for keys til notifications. RemoveItems baseres på at ingen 

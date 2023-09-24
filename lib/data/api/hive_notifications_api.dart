@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:hive_flutter/adapters.dart';
 import 'package:husk/data/api/notifications_api.dart';
 import 'package:husk/data/model/notification.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:husk/utils/logger_utils.dart';
 import 'package:husk/utils/notification_utils.dart';
 
@@ -10,9 +9,6 @@ import 'package:husk/utils/notification_utils.dart';
 class HiveNotificationsApi extends NotificationsApi {
   final StreamController _notificationsStreamController =
       StreamController<List<Notification>>();
-
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
   static const String databaseKey = "notifications";
   late final Box<Notification> _notificationBox;

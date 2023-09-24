@@ -26,6 +26,9 @@ void main() async {
 
   LoggerUtils.logger.i("Application initialized");
 
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationUtils().initNotification();
+
   runApp(
     // DevicePreview(
     //   builder: (context) =>
