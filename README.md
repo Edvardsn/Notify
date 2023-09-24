@@ -2,8 +2,6 @@
 
 A cross-platform basic application for creating and managing local notificaions on devices created using the Flutter framework.
 
-![](Notify_demo.gif)
-
 <p align="center">
   <img src="Notify_demo.gif" alt="animated" />
 </p>
