@@ -1,16 +1,16 @@
-# husk
+# Notify
 
-A new Flutter project.
+A cross-platform basic application for creating and managing local notificaions on devices created using the Flutter framework.
 
-## Getting Started
+![](https://github.com/Edvardsn/Notify/../../../../img/Notify_demo.gif)
 
-This project is a starting point for a Flutter application.
+## Supported Platforms
 
-A few resources to get you started if this is your first Flutter project:
+- macOS v10.11+.
+- iOS 8.0+
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Key libraries
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Hive, NoSQL local database
+- BLoC, Event-driven state managment
+- flutter-local-notificaions, Creating and schedulig local notifications

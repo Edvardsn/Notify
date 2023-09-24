@@ -32,7 +32,7 @@ class _DateSlotState extends State<DateSlot> {
           padding: const EdgeInsets.all(2),
           child: SizedBox(
             height: 25,
-            width: 50,
+            width: 60,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,

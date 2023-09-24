@@ -75,9 +75,7 @@ class NotificationDashboardBloc
   /// Requests
   Future<void> _onNotificationCreation(NotificationCreatedEvent event,
       Emitter<NotificationDashboardState> emit) async {
-    var id = state.notifications.length + 1;
-    await _repository.addNotification(Notification(
-        title: id.toString() + " Things to remeber to do something something"));
+    await _repository.addNotification(Notification(title: " "));
   }
 
   /// Requests given change to [Notification] is saved in the repository.

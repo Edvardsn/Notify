@@ -4,18 +4,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Reminder extends StatelessWidget {
   const Reminder({
     super.key,
-    required this.selected,
   });
-
-  final bool selected;
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
+    return Card(
+      color: Theme.of(context).cardColor,
+      elevation: 2,
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5))),
-      child: SizedBox(
+      child: const SizedBox(
         height: 30,
         width: 40,
         child: Padding(
@@ -25,7 +23,7 @@ class Reminder extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  "1h",
+                  "-",
                   style: TextStyle(
                       color: Colors.black54,
                       fontSize: 9,
@@ -34,7 +32,7 @@ class Reminder extends StatelessWidget {
               ),
               Flexible(
                 child: Icon(
-                  FontAwesomeIcons.solidBell,
+                  FontAwesomeIcons.clockRotateLeft,
                   color: Color(0xFFB36823),
                   size: 12,
                 ),

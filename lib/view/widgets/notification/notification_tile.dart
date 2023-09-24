@@ -2,6 +2,8 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:husk/data/model/notification.dart';
 import 'package:husk/view/widgets/notification/dateslot.dart';
+import 'package:husk/view/widgets/notification/recurring.dart';
+import 'package:husk/view/widgets/notification/reminder.dart';
 import '../../pages/notification_dashboard/bloc/notification_dashboard_bloc.dart';
 import 'notification_title.dart';
 import 'timeslot.dart';
@@ -113,6 +115,8 @@ class _NotificationTileState extends State<NotificationTile> {
               child:
                   DateSlot(timeOfNotification: widget.notif.timeOfNotification),
             ),
+            const Recurring(),
+            const Reminder()
           ],
         ),
         trailing: IconButton(
