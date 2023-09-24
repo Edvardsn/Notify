@@ -1,6 +1,6 @@
 # Notify
 
-A cross-platform basic application for creating and managing local notificaions on devices created using the Flutter framework.
+A basic application for creating and managing local notificaions on devices created using the Flutter framework.
 
 <p align="center">
   <img src="Notify_demo.gif" alt="animated" />
