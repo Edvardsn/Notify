@@ -2,7 +2,7 @@
 
 A cross-platform basic application for creating and managing local notificaions on devices created using the Flutter framework.
 
-![](https://github.com/Edvardsn/Notify/../../../../img/Notify_demo.gif)
+![](https://github.com/Edvardsn/Notify/img/Notify_demo.gif)
 
 ## Supported Platforms
 
@@ -11,6 +11,6 @@ A cross-platform basic application for creating and managing local notificaions 
 
 ## Key libraries
 
-- Hive, NoSQL local database
-- BLoC, Event-driven state managment
-- flutter-local-notificaions, Creating and schedulig local notifications
+- ![Hive](https://github.com/isar/hive) - NoSQL database
+- ![BLoC](https://github.com/felangel/bloc) - Event-driven state managment
+- ![flutter-local-notificaions](https://github.com/MaikuB/flutter_local_notifications) - Creating and schedulig local notifications
