@@ -13,6 +13,6 @@ A cross-platform basic application for creating and managing local notificaions 
 
 ## Key libraries
 
-- ![Hive](https://github.com/isar/hive) - NoSQL database
-- ![BLoC](https://github.com/felangel/bloc) - Event-driven state managment
-- ![flutter-local-notificaions](https://github.com/MaikuB/flutter_local_notifications) - Creating and schedulig local notifications
+- [Hive](https://github.com/isar/hive) - NoSQL database
+- [BLoC](https://github.com/felangel/bloc) - Event-driven state managment
+- [flutter-local-notificaions](https://github.com/MaikuB/flutter_local_notifications) - Creating and schedulig local notifications
