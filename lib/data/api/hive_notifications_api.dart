@@ -101,6 +101,7 @@ class HiveNotificationsApi extends NotificationsApi {
           id: originalNotification.key,
           body: originalNotification.title,
           title: 'Notify',
+          payLoad: 'payload',
           scheduledNotificationDateTime:
               originalNotification.timeOfNotification as DateTime);
     }
