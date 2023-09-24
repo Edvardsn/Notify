@@ -2,7 +2,7 @@
 
 A cross-platform basic application for creating and managing local notificaions on devices created using the Flutter framework.
 
-![](Notify-demo.gif)
+![](Notify_demo.gif)
 
 ## Supported Platforms
 
