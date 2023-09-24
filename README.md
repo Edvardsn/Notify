@@ -4,6 +4,10 @@ A cross-platform basic application for creating and managing local notificaions 
 
 ![](Notify_demo.gif)
 
+<p align="center">
+  <img src="Notify_demo.gif" alt="animated" />
+</p>
+
 ## Supported Platforms
 
 - macOS v10.11+.
